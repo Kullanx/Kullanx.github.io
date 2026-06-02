@@ -1,2 +1,344 @@
-cd Kullanx.github.io echo Hello, this is Kullanx > index.html git add index.html
-git commit -m "Add homepage" git push
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Spinning Banana - Three.js</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 20px;
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            font-size: 14px;
+        }
+        #controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 20;
+        }
+        button {
+            background: #ffc107;
+            border: none;
+            color: #2c2c2c;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 12px 32px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background 0.2s;
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            background: #ffca2c;
+            transform: scale(1.02);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        @media (max-width: 600px) {
+            button { font-size: 1.2rem; padding: 10px 24px; }
+            #info { font-size: 10px; top: 10px; left: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        🍌 <strong>3D Banana</strong> | Click button to spin / stop
+    </div>
+    <div id="controls">
+        <button id="spinBtn">🌀 START SPINNING</button>
+    </div>
+
+    <!-- Import Three.js core and add-ons -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // --- Setup Scene, Camera, Renderers ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a1030); // deep night sky
+        scene.fog = new THREE.FogExp2(0x0a1030, 0.008); // subtle fog
+
+        // Camera: perspective, position to see banana clearly
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(3, 2, 4);
+        camera.lookAt(0, 0.2, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true; // shadows add depth
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        // Simple CSS2DRenderer for a playful floating label (optional)
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0px';
+        labelRenderer.domElement.style.left = '0px';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.body.appendChild(labelRenderer.domElement);
+
+        // --- Controls: allow user to orbit, but the spin animation will rotate the banana relative to world? 
+        // We'll rotate the banana group, not the camera. OrbitControls keeps camera free, and banana spins independently.
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = false;
+        controls.enableZoom = true;
+        controls.enablePan = true;
+        controls.target.set(0, 0.2, 0);
+
+        // --- Lighting to make banana look glossy and appealing ---
+        // Ambient light
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+        
+        // Main directional light (simulating sunlight)
+        const mainLight = new THREE.DirectionalLight(0xfff5d1, 1.2);
+        mainLight.position.set(2, 3, 1.5);
+        mainLight.castShadow = true;
+        mainLight.receiveShadow = false;
+        mainLight.shadow.mapSize.width = 1024;
+        mainLight.shadow.mapSize.height = 1024;
+        scene.add(mainLight);
+        
+        // Fill light from below (warm)
+        const fillLight = new THREE.PointLight(0xcc9944, 0.5);
+        fillLight.position.set(0, -1, 0.5);
+        scene.add(fillLight);
+        
+        // Back rim light (cool) to highlight edges
+        const rimLight = new THREE.PointLight(0x88aaff, 0.6);
+        rimLight.position.set(-1.5, 1.2, -2);
+        scene.add(rimLight);
+        
+        // Additional warm fill from side
+        const warmFill = new THREE.PointLight(0xffaa66, 0.4);
+        warmFill.position.set(1.2, 0.5, 1.8);
+        scene.add(warmFill);
+        
+        // Soft ground reflection (invisible plane to give sense of shadow)
+        const floorPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(4, 4),
+            new THREE.ShadowMaterial({ opacity: 0.4, color: 0x000000, transparent: true, side: THREE.DoubleSide })
+        );
+        floorPlane.rotation.x = -Math.PI / 2;
+        floorPlane.position.y = -0.6;
+        floorPlane.receiveShadow = true;
+        scene.add(floorPlane);
+        
+        // Decorative simple grid helper (semi-transparent)
+        const gridHelper = new THREE.GridHelper(6, 20, 0x88aaff, 0x335588);
+        gridHelper.position.y = -0.55;
+        gridHelper.material.transparent = true;
+        gridHelper.material.opacity = 0.3;
+        scene.add(gridHelper);
+        
+        // --- Create the Banana using TubeGeometry along a curve ---
+        // This yields a nice 3D curved shape that looks like a real banana.
+        // Curve: quadratic bezier from bottom to top with a bend.
+        const startPoint = new THREE.Vector3(-0.8, -0.2, 0);
+        const controlPoint = new THREE.Vector3(0, 0.6, 0.6);
+        const endPoint = new THREE.Vector3(0.9, 0.3, 0.1);
+        
+        // Quadratic Bezier Curve3D
+        const curve = new THREE.QuadraticBezierCurve3(startPoint, controlPoint, endPoint);
+        
+        // Tube geometry options: radius, radial segments, tubular segments
+        const tubeGeometry = new THREE.TubeGeometry(curve, 64, 0.22, 12, false);
+        
+        // Banana peel material: glossy yellow with slight roughness
+        const bananaMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffdd77,
+            emissive: 0x442200,
+            emissiveIntensity: 0.08,
+            roughness: 0.4,
+            metalness: 0.1,
+            flatShading: false
+        });
+        
+        const bananaBody = new THREE.Mesh(tubeGeometry, bananaMaterial);
+        bananaBody.castShadow = true;
+        bananaBody.receiveShadow = false;
+        
+        // --- Add a little tip (brown/black at the end) ---
+        const tipGeometry = new THREE.SphereGeometry(0.13, 16, 16);
+        const tipMaterial = new THREE.MeshStandardMaterial({ color: 0x8b5a2b, roughness: 0.7 });
+        const tip = new THREE.Mesh(tipGeometry, tipMaterial);
+        tip.position.copy(endPoint);
+        tip.castShadow = true;
+        
+        // --- Add a stem (small greenish/brown stub) at the start point ---
+        const stemGeometry = new THREE.CylinderGeometry(0.09, 0.12, 0.3, 8);
+        const stemMaterial = new THREE.MeshStandardMaterial({ color: 0x6b8e23, roughness: 0.6 });
+        const stem = new THREE.Mesh(stemGeometry, stemMaterial);
+        stem.position.copy(startPoint);
+        // orient stem to point roughly away from curve tangent
+        const tangentStart = curve.getTangent(0);
+        stem.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), tangentStart.clone().negate());
+        stem.castShadow = true;
+        
+        // --- Add subtle brown spots / texture detail using small spheres ---
+        const spotsGroup = new THREE.Group();
+        const spotPositions = [
+            [0.2, 0.15, 0.25], [-0.3, 0.05, 0.3], [0.5, 0.22, -0.1], [0.05, 0.4, 0.4],
+            [-0.5, -0.05, 0.2], [0.7, 0.1, -0.05], [0.3, 0.35, 0.2], [-0.1, 0.2, 0.45]
+        ];
+        const spotMaterial = new THREE.MeshStandardMaterial({ color: 0xac7339, roughness: 0.8 });
+        spotPositions.forEach(pos => {
+            const spot = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), spotMaterial);
+            spot.position.set(pos[0], pos[1], pos[2]);
+            spot.castShadow = false;
+            spotsGroup.add(spot);
+        });
+        
+        // Group all banana parts together for easy rotation
+        const bananaGroup = new THREE.Group();
+        bananaGroup.add(bananaBody);
+        bananaGroup.add(tip);
+        bananaGroup.add(stem);
+        bananaGroup.add(spotsGroup);
+        
+        // Slight random rotation to make it look natural, but fine
+        bananaGroup.position.y = -0.1;
+        bananaGroup.rotation.z = 0.1;
+        bananaGroup.rotation.x = -0.05;
+        scene.add(bananaGroup);
+        
+        // --- Add floating particles (makes scene lively) ---
+        const particleCount = 600;
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlePositions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount; i++) {
+            particlePositions[i*3] = (Math.random() - 0.5) * 12;
+            particlePositions[i*3+1] = (Math.random() - 0.5) * 5;
+            particlePositions[i*3+2] = (Math.random() - 0.5) * 8 - 3;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            color: 0xffaa66,
+            size: 0.03,
+            transparent: true,
+            opacity: 0.5,
+            blending: THREE.AdditiveBlending
+        });
+        const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particleSystem);
+        
+        // --- Simple CSS2D label that floats near banana ---
+        const div = document.createElement('div');
+        div.textContent = '🍌 BANANA 🍌';
+        div.style.color = '#ffdd99';
+        div.style.fontSize = '18px';
+        div.style.fontWeight = 'bold';
+        div.style.textShadow = '1px 1px 0 #442200';
+        div.style.background = 'rgba(0,0,0,0.5)';
+        div.style.padding = '4px 12px';
+        div.style.borderRadius = '30px';
+        div.style.backdropFilter = 'blur(4px)';
+        div.style.fontFamily = 'sans-serif';
+        const labelObj = new CSS2DObject(div);
+        labelObj.position.set(1.2, 0.7, 0.2);
+        scene.add(labelObj);
+        
+        // --- Rotation control logic ---
+        let isSpinning = false;
+        let spinSpeed = 0.01; // radians per frame (smooth)
+        const spinBtn = document.getElementById('spinBtn');
+        
+        function toggleSpin() {
+            isSpinning = !isSpinning;
+            if (isSpinning) {
+                spinBtn.textContent = '⏹️ STOP SPINNING';
+                spinBtn.style.background = '#ff8c42';
+            } else {
+                spinBtn.textContent = '🌀 START SPINNING';
+                spinBtn.style.background = '#ffc107';
+            }
+        }
+        
+        spinBtn.addEventListener('click', toggleSpin);
+        
+        // Optional: add keyboard shortcut 's' to toggle spin
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'KeyS') {
+                toggleSpin();
+                e.preventDefault();
+            }
+        });
+        
+        // --- Simple animation loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // If spinning, rotate bananaGroup around Y axis (global Y)
+            if (isSpinning) {
+                bananaGroup.rotation.y += spinSpeed;
+                // also slightly rotate the label to always face camera? CSS2D always faces user, so fine.
+                // make particles slowly drift for ambiance
+                particleSystem.rotation.y += 0.002;
+                particleSystem.rotation.x += 0.001;
+            } else {
+                // slight idle wobble? no, but keep tiny rotation for particles
+                particleSystem.rotation.y += 0.0005;
+            }
+            
+            // Gentle floating animation for the CSS label (bobbing)
+            const time = Date.now() * 0.003;
+            labelObj.position.y = 0.7 + Math.sin(time) * 0.03;
+            labelObj.position.x = 1.2 + Math.cos(time * 1.3) * 0.02;
+            
+            // Update controls (for orbit)
+            controls.update();
+            
+            // Render
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // Small console log to confirm
+        console.log('🍌 Banana ready! Click the button or press S to spin.');
+        
+        // Add a subtle rim light that moves? optional but not needed.
+    </script>
+</body>
+</html>
