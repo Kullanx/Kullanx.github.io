@@ -206,6 +206,7 @@
                 letter-spacing: -0.03em;
                 line-height: 1.1;
                 animation: fadeInUp 0.8s 0.1s ease both;
+                text-shadow: 0 0 80px rgba(16, 185, 129, 0.15);
             }
             .hero h1 .gradient-text {
                 background: var(--gradient-1);
@@ -482,14 +483,18 @@
                 max-width: 680px;
                 position: relative;
                 overflow: hidden;
-                box-shadow: var(--shadow-card);
+                box-shadow:
+                    var(--shadow-card),
+                    0 0 60px rgba(16, 185, 129, 0.05);
                 transition:
                     transform 0.3s ease,
                     box-shadow 0.3s ease;
             }
             .cta-card:hover {
                 transform: translateY(-4px);
-                box-shadow: 0 8px 60px rgba(16, 185, 129, 0.15);
+                box-shadow:
+                    0 8px 60px rgba(16, 185, 129, 0.15),
+                    0 0 100px rgba(16, 185, 129, 0.06);
             }
             .cta-card::after {
                 content: "";
@@ -657,14 +662,10 @@
             <div class="hero-badge">
                 <span class="dot"></span> Macro Automation for Roblox TD
             </div>
-            <h1>
-                Automate Your<br />
-                <span class="gradient-text">Roblox Grind</span>
-            </h1>
+            <h1><span class="gradient-text">TinyKullan</span> Macro</h1>
             <p>
-                Record. Replay. Share. A lightning-fast macro automation tool
-                for Roblox tower defense games. Send your entire setup as a
-                single copy-paste code.
+                Universal macro automation tool for Roblox tower defense games.
+                Record, replay, and share.
             </p>
             <div class="hero-buttons">
                 <a
@@ -897,7 +898,7 @@
         <!-- FOOTER -->
         <footer>
             <p>
-                © 2025 <a href="https://github.com/Kullaners">Kullaners</a> ·
+                © 2026 <a href="https://github.com/Kullaners">Kullaners</a> ·
                 Licensed under
                 <a
                     href="https://github.com/Kullaners/TinyKullan/blob/main/LICENSE"
@@ -932,9 +933,9 @@
                     reset() {
                         this.x = Math.random() * w;
                         this.y = -10;
-                        this.size = Math.random() * 2 + 0.5;
-                        this.speed = Math.random() * 0.4 + 0.15;
-                        this.opacity = Math.random() * 0.4 + 0.1;
+                        this.size = Math.random() * 2.5 + 0.5;
+                        this.speed = Math.random() * 0.5 + 0.12;
+                        this.opacity = Math.random() * 0.5 + 0.08;
                     }
                     update() {
                         this.y += this.speed;
@@ -948,7 +949,7 @@
                     }
                 }
 
-                for (let i = 0; i < 80; i++) particles.push(new Particle());
+                for (let i = 0; i < 120; i++) particles.push(new Particle());
 
                 function animate() {
                     ctx.clearRect(0, 0, w, h);
