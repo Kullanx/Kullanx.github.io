@@ -233,10 +233,20 @@
                 height: 100px;
                 border-radius: 24px;
                 margin-bottom: 36px;
+                cursor: pointer;
                 box-shadow:
                     0 0 60px rgba(16, 185, 129, 0.25),
                     0 0 120px rgba(16, 185, 129, 0.08);
                 animation: float 6s ease-in-out infinite;
+                transition: transform 0.3s;
+            }
+            .hero-logo:hover {
+                box-shadow:
+                    0 0 80px rgba(16, 185, 129, 0.4),
+                    0 0 160px rgba(16, 185, 129, 0.15);
+            }
+            .hero-logo.spinning {
+                animation: spin 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             }
             @keyframes float {
                 0%,
@@ -245,6 +255,17 @@
                 }
                 50% {
                     transform: translateY(-12px);
+                }
+            }
+            @keyframes spin {
+                from {
+                    transform: rotate(0deg) scale(1);
+                }
+                50% {
+                    transform: rotate(380deg) scale(1.1);
+                }
+                to {
+                    transform: rotate(360deg) scale(1);
                 }
             }
             .hero-badge {
@@ -1108,6 +1129,15 @@
                 }
                 draw();
             })();
+
+            // ═══ LOGO SPIN ON CLICK ═══
+            const logo = document.querySelector(".hero-logo");
+            if (logo) {
+                logo.addEventListener("click", () => {
+                    logo.classList.add("spinning");
+                    setTimeout(() => logo.classList.remove("spinning"), 800);
+                });
+            }
 
             // ═══ NAV SCROLL ═══
             const navbar = document.getElementById("navbar");
