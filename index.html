@@ -1,344 +1,1085 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Spinning Banana - Three.js</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        #info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            background: rgba(0,0,0,0.6);
-            padding: 10px 20px;
-            border-radius: 8px;
-            pointer-events: none;
-            z-index: 10;
-            backdrop-filter: blur(5px);
-            font-size: 14px;
-        }
-        #controls {
-            position: absolute;
-            bottom: 30px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            z-index: 20;
-        }
-        button {
-            background: #ffc107;
-            border: none;
-            color: #2c2c2c;
-            font-size: 1.5rem;
-            font-weight: bold;
-            padding: 12px 32px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: transform 0.2s, background 0.2s;
-            font-family: inherit;
-            letter-spacing: 1px;
-        }
-        button:hover {
-            background: #ffca2c;
-            transform: scale(1.02);
-        }
-        button:active {
-            transform: scale(0.98);
-        }
-        @media (max-width: 600px) {
-            button { font-size: 1.2rem; padding: 10px 24px; }
-            #info { font-size: 10px; top: 10px; left: 10px; }
-        }
-    </style>
-</head>
-<body>
-    <div id="info">
-        🍌 <strong>3D Banana</strong> | Click button to spin / stop
-    </div>
-    <div id="controls">
-        <button id="spinBtn">🌀 START SPINNING</button>
-    </div>
-
-    <!-- Import Three.js core and add-ons -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TinyKullan — Universal Roblox Macro Automation</title>
+        <meta
+            name="description"
+            content="Record, replay, and share macros via Base64 codes. Universal automation for Roblox tower defense games."
+        />
+        <meta
+            property="og:title"
+            content="TinyKullan — Universal Roblox Macro"
+        />
+        <meta
+            property="og:description"
+            content="Record. Replay. Share. Let it Grind while you Rest."
+        />
+        <meta
+            property="og:image"
+            content="https://raw.githubusercontent.com/Kullaners/TinyKullan/main/logo.webp"
+        />
+        <meta property="og:type" content="website" />
+        <meta name="theme-color" content="#7c3aed" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #09090b;
+                --surface: #18181b;
+                --surface-2: #27272a;
+                --border: #3f3f46;
+                --text: #fafafa;
+                --text-dim: #a1a1aa;
+                --text-muted: #71717a;
+                --accent: #7c3aed;
+                --accent-glow: #a78bfa;
+                --accent-2: #06b6d4;
+                --gradient-1: linear-gradient(
+                    135deg,
+                    #7c3aed 0%,
+                    #3b82f6 50%,
+                    #06b6d4 100%
+                );
+                --gradient-2: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+                --shadow-glow:
+                    0 0 40px rgba(124, 58, 237, 0.3),
+                    0 0 80px rgba(124, 58, 237, 0.15);
+                --shadow-card:
+                    0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
             }
-        }
-    </script>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-
-        // --- Setup Scene, Camera, Renderers ---
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a1030); // deep night sky
-        scene.fog = new THREE.FogExp2(0x0a1030, 0.008); // subtle fog
-
-        // Camera: perspective, position to see banana clearly
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(3, 2, 4);
-        camera.lookAt(0, 0.2, 0);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // shadows add depth
-        renderer.setPixelRatio(window.devicePixelRatio);
-        document.body.appendChild(renderer.domElement);
-
-        // Simple CSS2DRenderer for a playful floating label (optional)
-        const labelRenderer = new CSS2DRenderer();
-        labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        labelRenderer.domElement.style.position = 'absolute';
-        labelRenderer.domElement.style.top = '0px';
-        labelRenderer.domElement.style.left = '0px';
-        labelRenderer.domElement.style.pointerEvents = 'none';
-        document.body.appendChild(labelRenderer.domElement);
-
-        // --- Controls: allow user to orbit, but the spin animation will rotate the banana relative to world? 
-        // We'll rotate the banana group, not the camera. OrbitControls keeps camera free, and banana spins independently.
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.autoRotate = false;
-        controls.enableZoom = true;
-        controls.enablePan = true;
-        controls.target.set(0, 0.2, 0);
-
-        // --- Lighting to make banana look glossy and appealing ---
-        // Ambient light
-        const ambientLight = new THREE.AmbientLight(0x404060);
-        scene.add(ambientLight);
-        
-        // Main directional light (simulating sunlight)
-        const mainLight = new THREE.DirectionalLight(0xfff5d1, 1.2);
-        mainLight.position.set(2, 3, 1.5);
-        mainLight.castShadow = true;
-        mainLight.receiveShadow = false;
-        mainLight.shadow.mapSize.width = 1024;
-        mainLight.shadow.mapSize.height = 1024;
-        scene.add(mainLight);
-        
-        // Fill light from below (warm)
-        const fillLight = new THREE.PointLight(0xcc9944, 0.5);
-        fillLight.position.set(0, -1, 0.5);
-        scene.add(fillLight);
-        
-        // Back rim light (cool) to highlight edges
-        const rimLight = new THREE.PointLight(0x88aaff, 0.6);
-        rimLight.position.set(-1.5, 1.2, -2);
-        scene.add(rimLight);
-        
-        // Additional warm fill from side
-        const warmFill = new THREE.PointLight(0xffaa66, 0.4);
-        warmFill.position.set(1.2, 0.5, 1.8);
-        scene.add(warmFill);
-        
-        // Soft ground reflection (invisible plane to give sense of shadow)
-        const floorPlane = new THREE.Mesh(
-            new THREE.PlaneGeometry(4, 4),
-            new THREE.ShadowMaterial({ opacity: 0.4, color: 0x000000, transparent: true, side: THREE.DoubleSide })
-        );
-        floorPlane.rotation.x = -Math.PI / 2;
-        floorPlane.position.y = -0.6;
-        floorPlane.receiveShadow = true;
-        scene.add(floorPlane);
-        
-        // Decorative simple grid helper (semi-transparent)
-        const gridHelper = new THREE.GridHelper(6, 20, 0x88aaff, 0x335588);
-        gridHelper.position.y = -0.55;
-        gridHelper.material.transparent = true;
-        gridHelper.material.opacity = 0.3;
-        scene.add(gridHelper);
-        
-        // --- Create the Banana using TubeGeometry along a curve ---
-        // This yields a nice 3D curved shape that looks like a real banana.
-        // Curve: quadratic bezier from bottom to top with a bend.
-        const startPoint = new THREE.Vector3(-0.8, -0.2, 0);
-        const controlPoint = new THREE.Vector3(0, 0.6, 0.6);
-        const endPoint = new THREE.Vector3(0.9, 0.3, 0.1);
-        
-        // Quadratic Bezier Curve3D
-        const curve = new THREE.QuadraticBezierCurve3(startPoint, controlPoint, endPoint);
-        
-        // Tube geometry options: radius, radial segments, tubular segments
-        const tubeGeometry = new THREE.TubeGeometry(curve, 64, 0.22, 12, false);
-        
-        // Banana peel material: glossy yellow with slight roughness
-        const bananaMaterial = new THREE.MeshStandardMaterial({
-            color: 0xffdd77,
-            emissive: 0x442200,
-            emissiveIntensity: 0.08,
-            roughness: 0.4,
-            metalness: 0.1,
-            flatShading: false
-        });
-        
-        const bananaBody = new THREE.Mesh(tubeGeometry, bananaMaterial);
-        bananaBody.castShadow = true;
-        bananaBody.receiveShadow = false;
-        
-        // --- Add a little tip (brown/black at the end) ---
-        const tipGeometry = new THREE.SphereGeometry(0.13, 16, 16);
-        const tipMaterial = new THREE.MeshStandardMaterial({ color: 0x8b5a2b, roughness: 0.7 });
-        const tip = new THREE.Mesh(tipGeometry, tipMaterial);
-        tip.position.copy(endPoint);
-        tip.castShadow = true;
-        
-        // --- Add a stem (small greenish/brown stub) at the start point ---
-        const stemGeometry = new THREE.CylinderGeometry(0.09, 0.12, 0.3, 8);
-        const stemMaterial = new THREE.MeshStandardMaterial({ color: 0x6b8e23, roughness: 0.6 });
-        const stem = new THREE.Mesh(stemGeometry, stemMaterial);
-        stem.position.copy(startPoint);
-        // orient stem to point roughly away from curve tangent
-        const tangentStart = curve.getTangent(0);
-        stem.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), tangentStart.clone().negate());
-        stem.castShadow = true;
-        
-        // --- Add subtle brown spots / texture detail using small spheres ---
-        const spotsGroup = new THREE.Group();
-        const spotPositions = [
-            [0.2, 0.15, 0.25], [-0.3, 0.05, 0.3], [0.5, 0.22, -0.1], [0.05, 0.4, 0.4],
-            [-0.5, -0.05, 0.2], [0.7, 0.1, -0.05], [0.3, 0.35, 0.2], [-0.1, 0.2, 0.45]
-        ];
-        const spotMaterial = new THREE.MeshStandardMaterial({ color: 0xac7339, roughness: 0.8 });
-        spotPositions.forEach(pos => {
-            const spot = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), spotMaterial);
-            spot.position.set(pos[0], pos[1], pos[2]);
-            spot.castShadow = false;
-            spotsGroup.add(spot);
-        });
-        
-        // Group all banana parts together for easy rotation
-        const bananaGroup = new THREE.Group();
-        bananaGroup.add(bananaBody);
-        bananaGroup.add(tip);
-        bananaGroup.add(stem);
-        bananaGroup.add(spotsGroup);
-        
-        // Slight random rotation to make it look natural, but fine
-        bananaGroup.position.y = -0.1;
-        bananaGroup.rotation.z = 0.1;
-        bananaGroup.rotation.x = -0.05;
-        scene.add(bananaGroup);
-        
-        // --- Add floating particles (makes scene lively) ---
-        const particleCount = 600;
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlePositions = new Float32Array(particleCount * 3);
-        for (let i = 0; i < particleCount; i++) {
-            particlePositions[i*3] = (Math.random() - 0.5) * 12;
-            particlePositions[i*3+1] = (Math.random() - 0.5) * 5;
-            particlePositions[i*3+2] = (Math.random() - 0.5) * 8 - 3;
-        }
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            color: 0xffaa66,
-            size: 0.03,
-            transparent: true,
-            opacity: 0.5,
-            blending: THREE.AdditiveBlending
-        });
-        const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particleSystem);
-        
-        // --- Simple CSS2D label that floats near banana ---
-        const div = document.createElement('div');
-        div.textContent = '🍌 BANANA 🍌';
-        div.style.color = '#ffdd99';
-        div.style.fontSize = '18px';
-        div.style.fontWeight = 'bold';
-        div.style.textShadow = '1px 1px 0 #442200';
-        div.style.background = 'rgba(0,0,0,0.5)';
-        div.style.padding = '4px 12px';
-        div.style.borderRadius = '30px';
-        div.style.backdropFilter = 'blur(4px)';
-        div.style.fontFamily = 'sans-serif';
-        const labelObj = new CSS2DObject(div);
-        labelObj.position.set(1.2, 0.7, 0.2);
-        scene.add(labelObj);
-        
-        // --- Rotation control logic ---
-        let isSpinning = false;
-        let spinSpeed = 0.01; // radians per frame (smooth)
-        const spinBtn = document.getElementById('spinBtn');
-        
-        function toggleSpin() {
-            isSpinning = !isSpinning;
-            if (isSpinning) {
-                spinBtn.textContent = '⏹️ STOP SPINNING';
-                spinBtn.style.background = '#ff8c42';
-            } else {
-                spinBtn.textContent = '🌀 START SPINNING';
-                spinBtn.style.background = '#ffc107';
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
-        }
-        
-        spinBtn.addEventListener('click', toggleSpin);
-        
-        // Optional: add keyboard shortcut 's' to toggle spin
-        window.addEventListener('keydown', (e) => {
-            if (e.code === 'KeyS') {
-                toggleSpin();
-                e.preventDefault();
+
+            html {
+                scroll-behavior: smooth;
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    "Inter",
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
             }
-        });
-        
-        // --- Simple animation loop ---
-        function animate() {
-            requestAnimationFrame(animate);
-            
-            // If spinning, rotate bananaGroup around Y axis (global Y)
-            if (isSpinning) {
-                bananaGroup.rotation.y += spinSpeed;
-                // also slightly rotate the label to always face camera? CSS2D always faces user, so fine.
-                // make particles slowly drift for ambiance
-                particleSystem.rotation.y += 0.002;
-                particleSystem.rotation.x += 0.001;
-            } else {
-                // slight idle wobble? no, but keep tiny rotation for particles
-                particleSystem.rotation.y += 0.0005;
+
+            body {
+                overflow-x: hidden;
             }
-            
-            // Gentle floating animation for the CSS label (bobbing)
-            const time = Date.now() * 0.003;
-            labelObj.position.y = 0.7 + Math.sin(time) * 0.03;
-            labelObj.position.x = 1.2 + Math.cos(time * 1.3) * 0.02;
-            
-            // Update controls (for orbit)
-            controls.update();
-            
-            // Render
-            renderer.render(scene, camera);
-            labelRenderer.render(scene, camera);
-        }
-        
-        animate();
-        
-        // Handle window resize
-        window.addEventListener('resize', onWindowResize, false);
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        }
-        
-        // Small console log to confirm
-        console.log('🍌 Banana ready! Click the button or press S to spin.');
-        
-        // Add a subtle rim light that moves? optional but not needed.
-    </script>
-</body>
+
+            /* ── ANIMATED ORB BACKGROUND ── */
+            #bg-canvas {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            /* ── NAV ── */
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                padding: 16px 24px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                background: rgba(9, 9, 11, 0.7);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                transition: all 0.3s ease;
+            }
+            nav.scrolled {
+                padding: 10px 24px;
+                background: rgba(9, 9, 11, 0.85);
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            }
+            .nav-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 800;
+                font-size: 1.25rem;
+                text-decoration: none;
+                color: var(--text);
+                letter-spacing: -0.02em;
+            }
+            .nav-brand img {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+            }
+            .nav-links {
+                display: flex;
+                gap: 28px;
+                align-items: center;
+            }
+            .nav-links a {
+                color: var(--text-dim);
+                text-decoration: none;
+                font-size: 0.875rem;
+                font-weight: 500;
+                transition: color 0.2s;
+            }
+            .nav-links a:hover {
+                color: var(--text);
+            }
+            .btn-nav {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: var(--accent);
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 20px;
+                border-radius: 10px;
+                font-weight: 600;
+                font-size: 0.875rem;
+                transition: all 0.25s;
+                box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+            }
+            .btn-nav:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+            }
+
+            /* ── HERO ── */
+            .hero {
+                position: relative;
+                z-index: 1;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 120px 24px 80px;
+            }
+            .hero-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(124, 58, 237, 0.12);
+                border: 1px solid rgba(124, 58, 237, 0.3);
+                padding: 8px 16px;
+                border-radius: 50px;
+                font-size: 0.8125rem;
+                font-weight: 500;
+                color: var(--accent-glow);
+                margin-bottom: 28px;
+                animation: fadeInUp 0.8s ease both;
+            }
+            .hero-badge .dot {
+                width: 7px;
+                height: 7px;
+                background: #22c55e;
+                border-radius: 50%;
+                animation: pulse-dot 2s ease-in-out infinite;
+            }
+            @keyframes pulse-dot {
+                0%,
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                50% {
+                    opacity: 0.5;
+                    transform: scale(1.4);
+                }
+            }
+            .hero h1 {
+                font-size: clamp(2.75rem, 6vw, 5rem);
+                font-weight: 900;
+                letter-spacing: -0.03em;
+                line-height: 1.1;
+                animation: fadeInUp 0.8s 0.1s ease both;
+            }
+            .hero h1 .gradient-text {
+                background: var(--gradient-1);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero p {
+                font-size: 1.125rem;
+                color: var(--text-dim);
+                max-width: 580px;
+                line-height: 1.6;
+                margin: 20px 0 36px;
+                animation: fadeInUp 0.8s 0.2s ease both;
+            }
+            .hero-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 14px;
+                justify-content: center;
+                animation: fadeInUp 0.8s 0.3s ease both;
+            }
+            .btn-primary,
+            .btn-secondary {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 16px 32px;
+                border-radius: 14px;
+                font-weight: 700;
+                font-size: 1rem;
+                text-decoration: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: none;
+                position: relative;
+                overflow: hidden;
+            }
+            .btn-primary {
+                background: var(--gradient-1);
+                color: #fff;
+                box-shadow:
+                    0 4px 30px rgba(124, 58, 237, 0.4),
+                    0 0 60px rgba(124, 58, 237, 0.15);
+            }
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow:
+                    0 8px 40px rgba(124, 58, 237, 0.5),
+                    0 0 80px rgba(124, 58, 237, 0.2);
+            }
+            .btn-primary:active {
+                transform: translateY(0);
+            }
+            .btn-secondary {
+                background: rgba(255, 255, 255, 0.05);
+                color: var(--text);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+            .btn-secondary:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                transform: translateY(-2px);
+            }
+            .btn-discord {
+                background: #5865f2;
+                color: #fff;
+                box-shadow: 0 4px 30px rgba(88, 101, 242, 0.4);
+                font-size: 1.05rem;
+                padding: 18px 38px;
+                animation: glow-pulse 2.5s ease-in-out infinite;
+            }
+            .btn-discord:hover {
+                transform: translateY(-2px) scale(1.03);
+                box-shadow: 0 8px 50px rgba(88, 101, 242, 0.6);
+            }
+            @keyframes glow-pulse {
+                0%,
+                100% {
+                    box-shadow: 0 4px 30px rgba(88, 101, 242, 0.4);
+                }
+                50% {
+                    box-shadow:
+                        0 4px 50px rgba(88, 101, 242, 0.7),
+                        0 0 80px rgba(88, 101, 242, 0.3);
+                }
+            }
+
+            /* ── STATS ROW ── */
+            .stats-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 40px;
+                justify-content: center;
+                margin-top: 48px;
+                animation: fadeInUp 0.8s 0.4s ease both;
+            }
+            .stat-item {
+                text-align: center;
+                padding: 16px 24px;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 16px;
+                backdrop-filter: blur(10px);
+                min-width: 110px;
+            }
+            .stat-item .num {
+                font-size: 1.75rem;
+                font-weight: 800;
+                background: var(--gradient-1);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .stat-item .lbl {
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                margin-top: 4px;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+            }
+
+            /* ── SECTIONS ── */
+            section {
+                position: relative;
+                z-index: 1;
+                padding: 100px 24px;
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+            .section-label {
+                font-size: 0.8125rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                color: var(--accent-glow);
+                margin-bottom: 12px;
+            }
+            .section-title {
+                font-size: clamp(2rem, 4vw, 2.75rem);
+                font-weight: 800;
+                letter-spacing: -0.02em;
+                margin-bottom: 16px;
+            }
+            .section-subtitle {
+                font-size: 1.05rem;
+                color: var(--text-dim);
+                max-width: 600px;
+                line-height: 1.6;
+                margin-bottom: 48px;
+            }
+
+            /* ── FEATURE CARDS GRID ── */
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+            }
+            .feature-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                padding: 32px 28px;
+                transition: all 0.35s ease;
+                position: relative;
+                overflow: hidden;
+            }
+            .feature-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--gradient-1);
+                opacity: 0;
+                transition: opacity 0.35s;
+            }
+            .feature-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(124, 58, 237, 0.4);
+                box-shadow: 0 8px 40px rgba(124, 58, 237, 0.1);
+            }
+            .feature-card:hover::before {
+                opacity: 1;
+            }
+            .feature-card .icon {
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(124, 58, 237, 0.12);
+                border-radius: 14px;
+                font-size: 1.5rem;
+                margin-bottom: 18px;
+            }
+            .feature-card h3 {
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 8px;
+                letter-spacing: -0.01em;
+            }
+            .feature-card p {
+                font-size: 0.9rem;
+                color: var(--text-dim);
+                line-height: 1.55;
+            }
+
+            /* ── TECH STACK TAGS ── */
+            .tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 48px;
+            }
+            .tag {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 8px 16px;
+                border-radius: 50px;
+                font-size: 0.825rem;
+                font-weight: 500;
+                color: var(--text-dim);
+                transition: all 0.25s;
+            }
+            .tag:hover {
+                background: rgba(124, 58, 237, 0.1);
+                border-color: rgba(124, 58, 237, 0.3);
+                color: var(--accent-glow);
+            }
+
+            /* ── SHOWCASE CODE BLOCK ── */
+            .code-block {
+                background: #0d0d10;
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: var(--shadow-card);
+            }
+            .code-block .bar {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 14px 20px;
+                background: var(--surface-2);
+                border-bottom: 1px solid var(--border);
+            }
+            .code-block .bar .btn-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+            }
+            .code-block .bar .btn-dot:nth-child(1) {
+                background: #ef4444;
+            }
+            .code-block .bar .btn-dot:nth-child(2) {
+                background: #eab308;
+            }
+            .code-block .bar .btn-dot:nth-child(3) {
+                background: #22c55e;
+            }
+            .code-block .bar .fname {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 0.8rem;
+                color: var(--text-muted);
+                margin-left: 8px;
+            }
+            .code-block pre {
+                padding: 24px;
+                overflow-x: auto;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 0.825rem;
+                line-height: 1.7;
+                color: var(--text-dim);
+            }
+            .code-block .str {
+                color: #a5d6ff;
+            }
+            .code-block .kw {
+                color: #c084fc;
+            }
+            .code-block .fn {
+                color: #67e8f9;
+            }
+            .code-block .cmt {
+                color: #52525b;
+                font-style: italic;
+            }
+
+            /* ── CTA SECTION ── */
+            .cta-section {
+                text-align: center;
+                padding: 120px 24px;
+                position: relative;
+                z-index: 1;
+            }
+            .cta-card {
+                display: inline-block;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 28px;
+                padding: 64px 48px;
+                max-width: 680px;
+                position: relative;
+                overflow: hidden;
+                box-shadow: var(--shadow-card);
+                transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+            }
+            .cta-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 60px rgba(124, 58, 237, 0.15);
+            }
+            .cta-card::after {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(
+                    circle at 50% 50%,
+                    rgba(124, 58, 237, 0.06) 0%,
+                    transparent 60%
+                );
+                pointer-events: none;
+            }
+            .cta-card h2 {
+                font-size: 2rem;
+                font-weight: 800;
+                letter-spacing: -0.02em;
+                margin-bottom: 12px;
+            }
+            .cta-card p {
+                color: var(--text-dim);
+                line-height: 1.6;
+                margin-bottom: 32px;
+            }
+
+            /* ── FOOTER ── */
+            footer {
+                position: relative;
+                z-index: 1;
+                border-top: 1px solid rgba(255, 255, 255, 0.06);
+                padding: 32px 24px;
+                text-align: center;
+                color: var(--text-muted);
+                font-size: 0.8125rem;
+            }
+            footer a {
+                color: var(--text-dim);
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+            footer a:hover {
+                color: var(--accent-glow);
+            }
+
+            /* ── ANIMATIONS ── */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            .reveal {
+                opacity: 0;
+                transform: translateY(40px);
+                transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* ── RESPONSIVE ── */
+            @media (max-width: 768px) {
+                .hero h1 {
+                    font-size: 2.2rem;
+                }
+                .hero p {
+                    font-size: 1rem;
+                    max-width: 100%;
+                }
+                .cta-card {
+                    padding: 40px 24px;
+                }
+                .cta-card h2 {
+                    font-size: 1.5rem;
+                }
+                .features-grid {
+                    grid-template-columns: 1fr;
+                }
+                .btn-discord {
+                    padding: 16px 28px;
+                    font-size: 0.95rem;
+                }
+                .stats-row {
+                    gap: 16px;
+                }
+                .stat-item {
+                    min-width: 80px;
+                    padding: 12px 16px;
+                }
+            }
+
+            /* ── ACCENT PARTICLES ── */
+            .accent-particle {
+                position: absolute;
+                border-radius: 50%;
+                background: var(--accent);
+                filter: blur(60px);
+                opacity: 0.08;
+                pointer-events: none;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Animated Background -->
+        <canvas id="bg-canvas"></canvas>
+
+        <!-- Floating Accent Blobs -->
+        <div
+            class="accent-particle"
+            style="width: 600px; height: 600px; top: -200px; right: -200px"
+        ></div>
+        <div
+            class="accent-particle"
+            style="
+                width: 400px;
+                height: 400px;
+                bottom: -100px;
+                left: -100px;
+                background: #06b6d4;
+            "
+        ></div>
+
+        <!-- NAV -->
+        <nav id="navbar">
+            <a href="#" class="nav-brand">
+                <img
+                    src="https://raw.githubusercontent.com/Kullaners/TinyKullan/main/logo.webp"
+                    alt="TK"
+                    onerror="this.style.display = 'none'"
+                />
+                TinyKullan
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#setup">Setup</a>
+                <a
+                    href="https://github.com/Kullaners/TinyKullan"
+                    target="_blank"
+                    rel="noopener"
+                    >GitHub</a
+                >
+                <a
+                    href="https://discord.gg/k6shVU7sf6"
+                    target="_blank"
+                    rel="noopener"
+                    class="btn-nav"
+                    >💬 Join Discord</a
+                >
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span class="dot"></span> v2.1.0 — Now with Base64 Macro Sharing
+            </div>
+            <h1>
+                Automate Your<br />
+                <span class="gradient-text">Roblox Grind</span>
+            </h1>
+            <p>
+                Record. Replay. Share. A lightning-fast macro automation tool
+                for Roblox tower defense games. Send your entire setup as a
+                single copy-paste code.
+            </p>
+            <div class="hero-buttons">
+                <a
+                    href="https://github.com/Kullaners/TinyKullan/releases"
+                    target="_blank"
+                    rel="noopener"
+                    class="btn-primary"
+                >
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    Download Latest
+                </a>
+                <a
+                    href="https://discord.gg/k6shVU7sf6"
+                    target="_blank"
+                    rel="noopener"
+                    class="btn-primary btn-discord"
+                >
+                    <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path
+                            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"
+                        />
+                    </svg>
+                    Join Discord — It's Free
+                </a>
+            </div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="num">20+</div>
+                    <div class="lbl">Games Supported</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">90K+</div>
+                    <div class="lbl">Macro Downloads</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">8K+</div>
+                    <div class="lbl">Discord Members</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">∞</div>
+                    <div class="lbl">Loops Possible</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section id="features">
+            <div class="reveal">
+                <div class="section-label">Capabilities</div>
+                <h2 class="section-title">
+                    Everything you need<br />to automate the grind
+                </h2>
+                <p class="section-subtitle">
+                    From pixel-precise image detection to one-click macro
+                    sharing — TinyKullan is built for tower defense players who
+                    value their time.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="icon">⏺️</div>
+                    <h3>Record &amp; Replay</h3>
+                    <p>
+                        Capture every click, keypress, and mouse movement with
+                        frame-perfect timing. Loop indefinitely for continuous
+                        farming.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="icon">📋</div>
+                    <h3>Base64 Share System</h3>
+                    <p>
+                        Export your entire macro — events, images, configs —
+                        into a single Base64 string. Share it on Discord in one
+                        paste.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="icon">👁️</div>
+                    <h3>Image Detection</h3>
+                    <p>
+                        OpenCV-powered screen template matching. Trigger actions
+                        when a target image appears — reconnect, webhook, or
+                        screenshot.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="icon">🔁</div>
+                    <h3>Auto-Recovery</h3>
+                    <p>
+                        Detects Roblox disconnects and auto-rejoins via Deeplink
+                        or Server ID. Optionally resumes your macro run
+                        automatically.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="icon">🔔</div>
+                    <h3>Discord Webhooks</h3>
+                    <p>
+                        Get notified on record, play, loop, and save events.
+                        Attach screenshots and mention users directly in your
+                        server.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="icon">🎨</div>
+                    <h3>Full Theming</h3>
+                    <p>
+                        Customize primary, secondary, and accent colors. Tiny
+                        Mode toolbar, always-on-top overlay, and adjustable
+                        transparency.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECH STACK -->
+        <section>
+            <div class="reveal">
+                <div class="section-label">Powered By</div>
+                <h2 class="section-title">Built with battle-tested tools</h2>
+            </div>
+            <div class="tags reveal">
+                <span class="tag">🐍 Python 3.10+</span>
+                <span class="tag">🖼️ OpenCV</span>
+                <span class="tag">📸 MSS</span>
+                <span class="tag">⌨️ pynput</span>
+                <span class="tag">🌐 requests</span>
+                <span class="tag">🔔 discord-webhook</span>
+                <span class="tag">⚡ AutoHotkey v2</span>
+                <span class="tag">📦 numpy</span>
+                <span class="tag">🧵 threading</span>
+            </div>
+        </section>
+
+        <!-- CODE SHOWCASE -->
+        <section id="setup">
+            <div class="reveal">
+                <div class="section-label">Quick Start</div>
+                <h2 class="section-title">Install in 60 seconds</h2>
+                <p class="section-subtitle">
+                    No complicated setup. Download, extract, install
+                    dependencies, and you're ready to grind.
+                </p>
+            </div>
+            <div class="code-block reveal">
+                <div class="bar">
+                    <span class="btn-dot"></span><span class="btn-dot"></span
+                    ><span class="btn-dot"></span>
+                    <span class="fname">Windows Terminal — setup.ps1</span>
+                </div>
+                <pre><span class="cmt"># 1. Clone the repository</span>
+<span class="kw">git clone</span> <span class="str">https://github.com/Kullaners/TinyKullan.git</span>
+<span class="kw">cd</span> TinyKullan
+
+<span class="cmt"># 2. Run the automatic dependency installer</span>
+<span class="fn">python</span> <span class="str">"python installer.bat"</span>
+
+<span class="cmt"># 3. Launch the app (silent mode — no console)</span>
+<span class="fn">start</span> TinyKullan.vbs
+
+<span class="cmt"># 4. Press F5 to record, F6 to play, F7 to loop! 🚀</span></pre>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="cta-card reveal">
+                <h2>Ready to stop grinding manually?</h2>
+                <p>
+                    Join thousands of players who let TinyKullan do the heavy
+                    lifting. Record once, replay forever.
+                </p>
+                <div
+                    style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 14px;
+                        justify-content: center;
+                    "
+                >
+                    <a
+                        href="https://github.com/Kullaners/TinyKullan/releases"
+                        target="_blank"
+                        rel="noopener"
+                        class="btn-primary"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path
+                                d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                            />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download for Windows
+                    </a>
+                    <a
+                        href="https://discord.gg/k6shVU7sf6"
+                        target="_blank"
+                        rel="noopener"
+                        class="btn-secondary"
+                        style="gap: 10px"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="#5865F2"
+                        >
+                            <path
+                                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"
+                            />
+                        </svg>
+                        Join Discord Community
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>
+                © 2025 <a href="https://github.com/Kullaners">Kullaners</a> ·
+                Licensed under
+                <a
+                    href="https://github.com/Kullaners/TinyKullan/blob/main/LICENSE"
+                    >GPL-3.0</a
+                >
+                · Made with 💜 for Roblox grinders
+            </p>
+        </footer>
+
+        <!-- SCRIPTS -->
+        <script>
+            // ── ANIMATED CANVAS BACKGROUND ──
+            (function () {
+                const canvas = document.getElementById("bg-canvas");
+                const ctx = canvas.getContext("2d");
+                let w,
+                    h,
+                    particles = [];
+
+                function resize() {
+                    w = canvas.width = window.innerWidth;
+                    h = canvas.height = window.innerHeight;
+                }
+                resize();
+                window.addEventListener("resize", resize);
+
+                class Particle {
+                    constructor() {
+                        this.reset();
+                        this.y = Math.random() * h;
+                    }
+                    reset() {
+                        this.x = Math.random() * w;
+                        this.y = -10;
+                        this.size = Math.random() * 2 + 0.5;
+                        this.speed = Math.random() * 0.4 + 0.15;
+                        this.opacity = Math.random() * 0.4 + 0.1;
+                    }
+                    update() {
+                        this.y += this.speed;
+                        if (this.y > h + 10) this.reset();
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(124, 58, 237, ${this.opacity})`;
+                        ctx.fill();
+                    }
+                }
+
+                for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+                function animate() {
+                    ctx.clearRect(0, 0, w, h);
+                    particles.forEach((p) => {
+                        p.update();
+                        p.draw();
+                    });
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            })();
+
+            // ── NAV SCROLL EFFECT ──
+            const navbar = document.getElementById("navbar");
+            window.addEventListener("scroll", () => {
+                navbar.classList.toggle("scrolled", window.scrollY > 50);
+            });
+
+            // ── SCROLL REVEAL ──
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("visible");
+                        }
+                    });
+                },
+                { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
+            );
+
+            document
+                .querySelectorAll(".reveal")
+                .forEach((el) => observer.observe(el));
+
+            // ── ANIMATED COUNTER ON SCROLL ──
+            const statNums = document.querySelectorAll(".stat-item .num");
+            const counterObserver = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const el = entry.target;
+                            const text = el.textContent.trim();
+                            if (text.includes("∞")) return;
+                            const target = parseInt(
+                                text.replace(/[^0-9]/g, ""),
+                            );
+                            if (isNaN(target)) return;
+                            const suffix = text.includes("K+")
+                                ? "K+"
+                                : text.includes("+")
+                                  ? "+"
+                                  : "";
+                            const duration = 1500;
+                            const start = performance.now();
+                            function update(ts) {
+                                const progress = Math.min(
+                                    (ts - start) / duration,
+                                    1,
+                                );
+                                const eased = 1 - Math.pow(1 - progress, 3);
+                                const current = Math.floor(eased * target);
+                                el.textContent = current + suffix;
+                                if (progress < 1) requestAnimationFrame(update);
+                            }
+                            requestAnimationFrame(update);
+                            counterObserver.unobserve(el);
+                        }
+                    });
+                },
+                { threshold: 0.5 },
+            );
+            statNums.forEach((el) => counterObserver.observe(el));
+        </script>
+    </body>
 </html>
