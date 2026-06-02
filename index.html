@@ -3,15 +3,12 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>TinyKullan — Universal Roblox Macro Automation</title>
+        <title>TinyKullan</title>
         <meta
             name="description"
             content="Record, replay, and share macros via Base64 codes. Universal automation for Roblox tower defense games."
         />
-        <meta
-            property="og:title"
-            content="TinyKullan — Universal Roblox Macro"
-        />
+        <meta property="og:title" content="TinyKullan" />
         <meta
             property="og:description"
             content="Record. Replay. Share. Let it Grind while you Rest."
@@ -21,7 +18,7 @@
             content="https://raw.githubusercontent.com/Kullaners/TinyKullan/main/logo.webp"
         />
         <meta property="og:type" content="website" />
-        <meta name="theme-color" content="#7c3aed" />
+        <meta name="theme-color" content="#10b981" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -37,19 +34,19 @@
                 --text: #fafafa;
                 --text-dim: #a1a1aa;
                 --text-muted: #71717a;
-                --accent: #7c3aed;
-                --accent-glow: #a78bfa;
+                --accent: #10b981;
+                --accent-glow: #34d399;
                 --accent-2: #06b6d4;
                 --gradient-1: linear-gradient(
                     135deg,
-                    #7c3aed 0%,
-                    #3b82f6 50%,
-                    #06b6d4 100%
+                    #10b981 0%,
+                    #059669 50%,
+                    #047857 100%
                 );
-                --gradient-2: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+                --gradient-2: linear-gradient(135deg, #10b981 0%, #34d399 100%);
                 --shadow-glow:
-                    0 0 40px rgba(124, 58, 237, 0.3),
-                    0 0 80px rgba(124, 58, 237, 0.15);
+                    0 0 40px rgba(16, 185, 129, 0.3),
+                    0 0 80px rgba(16, 185, 129, 0.15);
                 --shadow-card:
                     0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
             }
@@ -152,11 +149,11 @@
                 font-weight: 600;
                 font-size: 0.875rem;
                 transition: all 0.25s;
-                box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
             }
             .btn-nav:hover {
                 transform: translateY(-1px);
-                box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+                box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
             }
 
             /* ── HERO ── */
@@ -175,8 +172,8 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 8px;
-                background: rgba(124, 58, 237, 0.12);
-                border: 1px solid rgba(124, 58, 237, 0.3);
+                background: rgba(16, 185, 129, 0.12);
+                border: 1px solid rgba(16, 185, 129, 0.3);
                 padding: 8px 16px;
                 border-radius: 50px;
                 font-size: 0.8125rem;
@@ -251,14 +248,14 @@
                 background: var(--gradient-1);
                 color: #fff;
                 box-shadow:
-                    0 4px 30px rgba(124, 58, 237, 0.4),
-                    0 0 60px rgba(124, 58, 237, 0.15);
+                    0 4px 30px rgba(16, 185, 129, 0.4),
+                    0 0 60px rgba(16, 185, 129, 0.15);
             }
             .btn-primary:hover {
                 transform: translateY(-2px);
                 box-shadow:
-                    0 8px 40px rgba(124, 58, 237, 0.5),
-                    0 0 80px rgba(124, 58, 237, 0.2);
+                    0 8px 40px rgba(16, 185, 129, 0.5),
+                    0 0 80px rgba(16, 185, 129, 0.2);
             }
             .btn-primary:active {
                 transform: translateY(0);
@@ -275,61 +272,27 @@
                 transform: translateY(-2px);
             }
             .btn-discord {
-                background: #5865f2;
+                background: #10b981;
                 color: #fff;
-                box-shadow: 0 4px 30px rgba(88, 101, 242, 0.4);
+                box-shadow: 0 4px 30px rgba(16, 185, 129, 0.4);
                 font-size: 1.05rem;
                 padding: 18px 38px;
                 animation: glow-pulse 2.5s ease-in-out infinite;
             }
             .btn-discord:hover {
                 transform: translateY(-2px) scale(1.03);
-                box-shadow: 0 8px 50px rgba(88, 101, 242, 0.6);
+                box-shadow: 0 8px 50px rgba(16, 185, 129, 0.6);
             }
             @keyframes glow-pulse {
                 0%,
                 100% {
-                    box-shadow: 0 4px 30px rgba(88, 101, 242, 0.4);
+                    box-shadow: 0 4px 30px rgba(16, 185, 129, 0.4);
                 }
                 50% {
                     box-shadow:
-                        0 4px 50px rgba(88, 101, 242, 0.7),
-                        0 0 80px rgba(88, 101, 242, 0.3);
+                        0 4px 50px rgba(16, 185, 129, 0.7),
+                        0 0 80px rgba(16, 185, 129, 0.3);
                 }
-            }
-
-            /* ── STATS ROW ── */
-            .stats-row {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 40px;
-                justify-content: center;
-                margin-top: 48px;
-                animation: fadeInUp 0.8s 0.4s ease both;
-            }
-            .stat-item {
-                text-align: center;
-                padding: 16px 24px;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                border-radius: 16px;
-                backdrop-filter: blur(10px);
-                min-width: 110px;
-            }
-            .stat-item .num {
-                font-size: 1.75rem;
-                font-weight: 800;
-                background: var(--gradient-1);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
-            .stat-item .lbl {
-                font-size: 0.75rem;
-                color: var(--text-muted);
-                margin-top: 4px;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
             }
 
             /* ── SECTIONS ── */
@@ -390,8 +353,8 @@
             }
             .feature-card:hover {
                 transform: translateY(-4px);
-                border-color: rgba(124, 58, 237, 0.4);
-                box-shadow: 0 8px 40px rgba(124, 58, 237, 0.1);
+                border-color: rgba(16, 185, 129, 0.4);
+                box-shadow: 0 8px 40px rgba(16, 185, 129, 0.1);
             }
             .feature-card:hover::before {
                 opacity: 1;
@@ -402,7 +365,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: rgba(124, 58, 237, 0.12);
+                background: rgba(16, 185, 129, 0.12);
                 border-radius: 14px;
                 font-size: 1.5rem;
                 margin-bottom: 18px;
@@ -440,8 +403,8 @@
                 transition: all 0.25s;
             }
             .tag:hover {
-                background: rgba(124, 58, 237, 0.1);
-                border-color: rgba(124, 58, 237, 0.3);
+                background: rgba(16, 185, 129, 0.1);
+                border-color: rgba(16, 185, 129, 0.3);
                 color: var(--accent-glow);
             }
 
@@ -526,7 +489,7 @@
             }
             .cta-card:hover {
                 transform: translateY(-4px);
-                box-shadow: 0 8px 60px rgba(124, 58, 237, 0.15);
+                box-shadow: 0 8px 60px rgba(16, 185, 129, 0.15);
             }
             .cta-card::after {
                 content: "";
@@ -537,7 +500,7 @@
                 height: 200%;
                 background: radial-gradient(
                     circle at 50% 50%,
-                    rgba(124, 58, 237, 0.06) 0%,
+                    rgba(16, 185, 129, 0.06) 0%,
                     transparent 60%
                 );
                 pointer-events: none;
@@ -625,11 +588,7 @@
                     font-size: 0.95rem;
                 }
                 .stats-row {
-                    gap: 16px;
-                }
-                .stat-item {
-                    min-width: 80px;
-                    padding: 12px 16px;
+                    display: none;
                 }
             }
 
@@ -639,7 +598,7 @@
                 border-radius: 50%;
                 background: var(--accent);
                 filter: blur(60px);
-                opacity: 0.08;
+                opacity: 0.06;
                 pointer-events: none;
             }
         </style>
@@ -660,7 +619,7 @@
                 height: 400px;
                 bottom: -100px;
                 left: -100px;
-                background: #06b6d4;
+                background: #34d399;
             "
         ></div>
 
@@ -688,7 +647,7 @@
                     target="_blank"
                     rel="noopener"
                     class="btn-nav"
-                    >💬 Join Discord</a
+                    >Join</a
                 >
             </div>
         </nav>
@@ -696,7 +655,7 @@
         <!-- HERO -->
         <section class="hero">
             <div class="hero-badge">
-                <span class="dot"></span> v2.1.0 — Now with Base64 Macro Sharing
+                <span class="dot"></span> Macro Automation for Roblox TD
             </div>
             <h1>
                 Automate Your<br />
@@ -746,26 +705,8 @@
                             d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"
                         />
                     </svg>
-                    Join Discord — It's Free
+                    Join
                 </a>
-            </div>
-            <div class="stats-row">
-                <div class="stat-item">
-                    <div class="num">20+</div>
-                    <div class="lbl">Games Supported</div>
-                </div>
-                <div class="stat-item">
-                    <div class="num">90K+</div>
-                    <div class="lbl">Macro Downloads</div>
-                </div>
-                <div class="stat-item">
-                    <div class="num">8K+</div>
-                    <div class="lbl">Discord Members</div>
-                </div>
-                <div class="stat-item">
-                    <div class="num">∞</div>
-                    <div class="lbl">Loops Possible</div>
-                </div>
             </div>
         </section>
 
@@ -947,7 +888,7 @@
                                 d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"
                             />
                         </svg>
-                        Join Discord Community
+                        Join Discord
                     </a>
                 </div>
             </div>
@@ -962,7 +903,7 @@
                     href="https://github.com/Kullaners/TinyKullan/blob/main/LICENSE"
                     >GPL-3.0</a
                 >
-                · Made with 💜 for Roblox grinders
+                · Made with 💚 for Roblox grinders
             </p>
         </footer>
 
@@ -1002,7 +943,7 @@
                     draw() {
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(124, 58, 237, ${this.opacity})`;
+                        ctx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
                         ctx.fill();
                     }
                 }
@@ -1041,45 +982,6 @@
             document
                 .querySelectorAll(".reveal")
                 .forEach((el) => observer.observe(el));
-
-            // ── ANIMATED COUNTER ON SCROLL ──
-            const statNums = document.querySelectorAll(".stat-item .num");
-            const counterObserver = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            const el = entry.target;
-                            const text = el.textContent.trim();
-                            if (text.includes("∞")) return;
-                            const target = parseInt(
-                                text.replace(/[^0-9]/g, ""),
-                            );
-                            if (isNaN(target)) return;
-                            const suffix = text.includes("K+")
-                                ? "K+"
-                                : text.includes("+")
-                                  ? "+"
-                                  : "";
-                            const duration = 1500;
-                            const start = performance.now();
-                            function update(ts) {
-                                const progress = Math.min(
-                                    (ts - start) / duration,
-                                    1,
-                                );
-                                const eased = 1 - Math.pow(1 - progress, 3);
-                                const current = Math.floor(eased * target);
-                                el.textContent = current + suffix;
-                                if (progress < 1) requestAnimationFrame(update);
-                            }
-                            requestAnimationFrame(update);
-                            counterObserver.unobserve(el);
-                        }
-                    });
-                },
-                { threshold: 0.5 },
-            );
-            statNums.forEach((el) => counterObserver.observe(el));
         </script>
     </body>
 </html>
