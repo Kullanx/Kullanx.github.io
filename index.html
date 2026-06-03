@@ -1409,29 +1409,29 @@
         <section id="about">
             <div class="reveal">
                 <div class="section-label">About Me</div>
-                <h2 class="section-title">Hey, I'm 68vy</h2>
+                <h2 class="section-title">Hey, I'm Kullan</h2>
             </div>
             <div class="about-card reveal">
                 <img
                     class="about-avatar"
-                    src="https://cdn.discordapp.com/avatars/1037391163507871884/avatar.webp?size=128"
-                    alt="68vy"
+                    id="aboutPfp"
+                    src=""
+                    alt="Kullan"
+                    style="object-fit: cover"
                     onerror="
                         this.style.display = 'none';
                         this.insertAdjacentHTML(
                             'afterend',
-                            '<div class=about-avatar>68</div>',
+                            '<div class=about-avatar>KU</div>',
                         );
                     "
-                    style="object-fit: cover"
                 />
                 <div class="about-text">
-                    <h3>15 · Bulgaria 🇧🇬</h3>
+                    <h3 id="aboutName">15 · Bulgaria 🇧🇬</h3>
                     <p>
-                        I'm passionate about IT and cyber security. I love
-                        learning new things, going outside, reading, and
-                        watching anime. Everything I build is open source — feel
-                        free to use it, learn from it, or contribute.
+                        I'm 15 I'm from Bulgaria I'm very interested at IT and
+                        cyber security I like to learn go outside read watch
+                        anime
                     </p>
                     <div class="about-tags">
                         <span>🛡️ Cyber Security</span>
@@ -1799,6 +1799,23 @@
             }
             fetchStars("TinyKullan", "stars-tk");
             fetchStars("Kulchat", "stars-kc");
+
+            // ═══ DISCORD PFP ═══
+            const pfp = document.getElementById("aboutPfp");
+            if (pfp) {
+                fetch("https://api.lanyard.rest/v1/users/1037391163507871884")
+                    .then((r) => r.json())
+                    .then((d) => {
+                        if (d.success) {
+                            const u = d.data.discord_user;
+                            pfp.src = `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.webp?size=128`;
+                            const nameEl = document.getElementById("aboutName");
+                            if (nameEl)
+                                nameEl.textContent = `${u.display_name || u.username} · Bulgaria 🇧🇬`;
+                        }
+                    })
+                    .catch(() => {});
+            }
         </script>
     </body>
 </html>
