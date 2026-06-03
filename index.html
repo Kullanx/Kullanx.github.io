@@ -62,9 +62,13 @@
                     -apple-system,
                     sans-serif;
                 -webkit-font-smoothing: antialiased;
+                -webkit-tap-highlight-color: transparent;
+                overscroll-behavior: none;
             }
             body {
                 overflow-x: hidden;
+                padding: env(safe-area-inset-top) env(safe-area-inset-right)
+                    env(safe-area-inset-bottom) env(safe-area-inset-left);
             }
 
             /* CANVAS LAYERS */
@@ -404,6 +408,9 @@
                 border: none;
                 position: relative;
                 overflow: hidden;
+                touch-action: manipulation;
+                -webkit-user-select: none;
+                user-select: none;
             }
             .btn-primary {
                 background: var(--gradient-2);
@@ -622,6 +629,9 @@
                 border-radius: 10px;
                 background: rgba(255, 255, 255, 0.03);
                 border: 1px solid rgba(255, 255, 255, 0.06);
+                touch-action: manipulation;
+                -webkit-user-select: none;
+                user-select: none;
             }
             .project-card-footer a:hover {
                 color: var(--accent-glow);
@@ -1119,36 +1129,53 @@
                 </div>
                 <div class="project-card reveal">
                     <div class="project-card-header">
-                        <div
+                        <img
                             class="p-icon"
-                            style="
-                                background: rgba(245, 158, 11, 0.1);
-                                border-color: rgba(245, 158, 11, 0.2);
-                            "
-                        >
-                            💬
-                        </div>
+                            src="https://raw.githubusercontent.com/Kullaners/TinyKullan/main/logo.webp"
+                            alt="KC"
+                            style="object-fit: cover"
+                            onerror="this.style.display='none';this.parentElement.insertAdjacentHTML('afterbegin','<div class=\\'p-icon\\' style=\\'background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2)\\'>💬</div>')"
+                        />
                         <div class="p-info">
-                            <h3>Kulchat</h3>
-                            <span class="p-tag">Chat App · Rust</span>
+                            <h3>
+                                Kulchat
+                                <span
+                                    style="
+                                        color: #ef4444;
+                                        font-size: 0.7rem;
+                                        font-weight: 700;
+                                        vertical-align: middle;
+                                    "
+                                    >WIP</span
+                                >
+                            </h3>
+                            <span class="p-tag">Chat App · Tauri</span>
                         </div>
                     </div>
                     <div class="project-card-body">
                         <p>
                             Completely open source chatting and video call app
-                            built with Rust. Fast, secure, and easy to navigate.
+                            built with Rust + Tauri. Fast, secure, and easy to
+                            navigate.
                         </p>
                         <div class="p-tech">
                             <span
                                 style="
-                                    background: rgba(245, 158, 11, 0.06);
-                                    border-color: rgba(245, 158, 11, 0.15);
+                                    background: rgba(245, 158, 11, 0.08);
+                                    border-color: rgba(245, 158, 11, 0.18);
                                     color: #fbbf24;
                                 "
                                 >Rust</span
                             >
-                            <span>WebRTC</span><span>WebSocket</span
-                            ><span>Tokio</span>
+                            <span
+                                style="
+                                    background: rgba(245, 158, 11, 0.08);
+                                    border-color: rgba(245, 158, 11, 0.18);
+                                    color: #fbbf24;
+                                "
+                                >Tauri</span
+                            >
+                            <span>WebRTC</span><span>WebSocket</span>
                         </div>
                     </div>
                     <div class="project-card-footer">
