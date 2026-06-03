@@ -37,15 +37,44 @@
                 --accent: #10b981;
                 --accent-glow: #34d399;
                 --accent-2: #f59e0b;
-                --gradient-1: linear-gradient(
-                    135deg,
-                    #10b981 0%,
-                    #34d399 40%,
-                    #6ee7b7 100%
-                );
+                --card-bg: rgba(10, 15, 30, 0.7);
+                --card-border: rgba(26, 39, 64, 0.6);
+                --card-hover-bg: rgba(16, 30, 50, 0.8);
+                --nav-bg: rgba(2, 6, 23, 0.78);
+                --nav-scrolled-bg: rgba(2, 6, 23, 0.94);
+                --btn-ghost-bg: rgba(255, 255, 255, 0.03);
+                --btn-ghost-border: rgba(255, 255, 255, 0.07);
+                --btn-ghost-hover-bg: rgba(255, 255, 255, 0.07);
+                --btn-ghost-hover-border: rgba(255, 255, 255, 0.14);
+                --footer-border: rgba(255, 255, 255, 0.03);
+                --orb-opacity-1: 0.05;
+                --orb-opacity-2: 0.04;
+                --star-color: rgba(255, 255, 255;
+                --gradient-1: linear-gradient(135deg, #10b981 0%, #34d399 40%, #6ee7b7 100%);
                 --gradient-2: linear-gradient(135deg, #059669 0%, #10b981 100%);
-                --shadow-card:
-                    0 1px 3px rgba(0, 0, 0, 0.6), 0 8px 32px rgba(0, 0, 0, 0.4);
+                --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.6), 0 8px 32px rgba(0, 0, 0, 0.4);
+            }
+            [data-theme="light"] {
+                --bg: #f8fafc;
+                --surface: #ffffff;
+                --border: #e2e8f0;
+                --border-glow: rgba(16, 185, 129, 0.3);
+                --text: #0f172a;
+                --text-dim: #475569;
+                --text-muted: #94a3b8;
+                --card-bg: rgba(255, 255, 255, 0.85);
+                --card-border: rgba(226, 232, 240, 0.8);
+                --card-hover-bg: rgba(255, 255, 255, 0.95);
+                --nav-bg: rgba(248, 250, 252, 0.85);
+                --nav-scrolled-bg: rgba(248, 250, 252, 0.96);
+                --btn-ghost-bg: rgba(0, 0, 0, 0.03);
+                --btn-ghost-border: rgba(0, 0, 0, 0.08);
+                --btn-ghost-hover-bg: rgba(0, 0, 0, 0.06);
+                --btn-ghost-hover-border: rgba(0, 0, 0, 0.12);
+                --footer-border: rgba(0, 0, 0, 0.06);
+                --orb-opacity-1: 0.03;
+                --orb-opacity-2: 0.02;
+                --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
             }
             * {
                 margin: 0;
@@ -195,13 +224,13 @@
                 justify-content: space-between;
                 backdrop-filter: blur(28px) saturate(180%);
                 -webkit-backdrop-filter: blur(28px) saturate(180%);
-                background: rgba(2, 6, 23, 0.78);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+                background: var(--nav-bg);
+                border-bottom: 1px solid var(--footer-border);
                 transition: all 0.35s ease;
             }
             nav.scrolled {
                 padding: 8px 36px;
-                background: rgba(2, 6, 23, 0.94);
+                background: var(--nav-scrolled-bg);
                 box-shadow: 0 4px 50px rgba(0, 0, 0, 0.5);
             }
             .nav-brand {
@@ -430,14 +459,14 @@
                 transition: transform 0.1s;
             }
             .btn-secondary {
-                background: rgba(255, 255, 255, 0.03);
+                background: var(--btn-ghost-bg);
                 color: var(--text);
-                border: 1px solid rgba(255, 255, 255, 0.07);
+                border: 1px solid var(--btn-ghost-border);
                 backdrop-filter: blur(10px);
             }
             .btn-secondary:hover {
-                background: rgba(255, 255, 255, 0.07);
-                border-color: rgba(255, 255, 255, 0.14);
+                background: var(--btn-ghost-hover-bg);
+                border-color: var(--btn-ghost-hover-border);
                 transform: translateY(-4px);
             }
             .btn-discord {
@@ -513,8 +542,8 @@
                 gap: 24px;
             }
             .project-card {
-                background: rgba(10, 15, 30, 0.7);
-                border: 1px solid rgba(26, 39, 64, 0.6);
+                background: var(--card-bg);
+                border: 1px solid var(--card-border);
                 border-radius: 24px;
                 overflow: hidden;
                 transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -539,7 +568,7 @@
                 transform: translateY(-8px);
                 border-color: var(--border-glow);
                 box-shadow: 0 20px 90px rgba(16, 185, 129, 0.12);
-                background: rgba(16, 30, 50, 0.8);
+                background: var(--card-hover-bg);
             }
             .project-card:hover::before {
                 opacity: 1;
@@ -612,7 +641,7 @@
             }
             .project-card-footer {
                 padding: 20px 34px;
-                border-top: 1px solid rgba(255, 255, 255, 0.04);
+                border-top: 1px solid var(--footer-border);
                 display: flex;
                 gap: 12px;
             }
@@ -627,8 +656,8 @@
                 transition: all 0.25s ease;
                 padding: 8px 16px;
                 border-radius: 10px;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.06);
+                background: var(--btn-ghost-bg);
+                border: 1px solid var(--btn-ghost-border);
                 touch-action: manipulation;
                 -webkit-user-select: none;
                 user-select: none;
@@ -640,6 +669,89 @@
                 transform: translateY(-1px);
             }
 
+            /* STATUS BADGES */
+            .status-badge {
+                display: inline-block;
+                font-size: 0.65rem;
+                font-weight: 700;
+                padding: 2px 8px;
+                border-radius: 6px;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin-left: 8px;
+                vertical-align: middle;
+            }
+            .status-active { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+            .status-wip { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); }
+            .status-archived { background: rgba(100, 116, 139, 0.12); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.25); }
+
+            /* STAR COUNT */
+            .star-count {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 0.78rem;
+                font-weight: 600;
+                color: var(--accent-2);
+                margin-left: 6px;
+            }
+            .star-count svg { opacity: 0.8; }
+
+            /* THEME TOGGLE */
+            #theme-toggle {
+                background: none;
+                border: 1px solid var(--btn-ghost-border);
+                color: var(--text-dim);
+                cursor: pointer;
+                font-size: 1.1rem;
+                padding: 8px;
+                border-radius: 8px;
+                transition: all 0.25s;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+                touch-action: manipulation;
+            }
+            #theme-toggle:hover { color: var(--text); background: var(--btn-ghost-hover-bg); }
+
+            /* ABOUT SECTION */
+            .about-card {
+                background: var(--card-bg);
+                border: 1px solid var(--card-border);
+                border-radius: 24px;
+                padding: 48px 44px;
+                backdrop-filter: blur(10px);
+                display: flex;
+                gap: 28px;
+                align-items: flex-start;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+            .about-avatar {
+                width: 72px;
+                height: 72px;
+                border-radius: 50%;
+                background: var(--gradient-2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2rem;
+                font-weight: 900;
+                color: #fff;
+                flex-shrink: 0;
+            }
+            .about-text h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+            .about-text p { font-size: 0.925rem; color: var(--text-dim); line-height: 1.65; }
+            .about-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+            .about-tags span {
+                font-size: 0.7rem;
+                padding: 4px 10px;
+                border-radius: 6px;
+                background: rgba(16, 185, 129, 0.06);
+                border: 1px solid rgba(16, 185, 129, 0.15);
+                color: var(--accent-glow);
+            }
+
             /* PLACEHOLDER */
             .project-card.placeholder {
                 opacity: 0.4;
@@ -647,9 +759,9 @@
             }
             .project-card.placeholder:hover {
                 transform: none;
-                border-color: rgba(26, 39, 64, 0.6);
+                border-color: var(--card-border);
                 box-shadow: none;
-                background: rgba(10, 15, 30, 0.7);
+                background: var(--card-bg);
             }
             .project-card.placeholder:hover::before {
                 opacity: 0;
@@ -668,8 +780,8 @@
             }
             .cta-card {
                 display: inline-block;
-                background: rgba(10, 15, 30, 0.7);
-                border: 1px solid rgba(26, 39, 64, 0.6);
+                background: var(--card-bg);
+                border: 1px solid var(--card-border);
                 border-radius: 32px;
                 padding: 80px 60px;
                 max-width: 720px;
@@ -741,7 +853,7 @@
             footer {
                 position: relative;
                 z-index: 1;
-                border-top: 1px solid rgba(255, 255, 255, 0.03);
+                border-top: 1px solid var(--footer-border);
                 padding: 40px 24px;
                 text-align: center;
                 color: var(--text-muted);
@@ -938,6 +1050,18 @@
                     height: 40px;
                     border-radius: 10px;
                 }
+                .about-card {
+                    flex-direction: column;
+                    padding: 28px 18px;
+                    gap: 16px;
+                    align-items: center;
+                    text-align: center;
+                }
+                .about-avatar {
+                    width: 56px;
+                    height: 56px;
+                    font-size: 1.5rem;
+                }
                 .cta-card {
                     padding: 36px 18px;
                     margin: 0 4px;
@@ -978,6 +1102,7 @@
             </a>
             <div class="nav-links">
                 <a href="#projects">Projects</a>
+                <a href="#about">About</a>
                 <a
                     href="https://github.com/Kullaners"
                     target="_blank"
@@ -991,6 +1116,7 @@
                     class="btn-nav"
                     >Discord</a
                 >
+                <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
             </div>
         </nav>
 
@@ -1077,7 +1203,25 @@
                             onerror="this.style.display='none';this.parentElement.insertAdjacentHTML('afterbegin','<div class=\\'p-icon\\'>🎮</div>')"
                         />
                         <div class="p-info">
-                            <h3>TinyKullan</h3>
+                            <h3>
+                                TinyKullan
+                                <span class="status-badge status-active"
+                                    >Active</span
+                                >
+                                <span class="star-count" id="stars-tk">
+                                    <svg
+                                        width="13"
+                                        height="13"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                    >
+                                        <path
+                                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                                        />
+                                    </svg>
+                                    ...
+                                </span>
+                            </h3>
                             <span class="p-tag">Macro Tool · Python</span>
                         </div>
                     </div>
@@ -1093,6 +1237,28 @@
                         </div>
                     </div>
                     <div class="project-card-footer">
+                        <a
+                            href="https://github.com/Kullaners/TinyKullan/releases"
+                            target="_blank"
+                            rel="noopener"
+                            ><svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                                />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Download</a
+                        >
                         <a
                             href="https://github.com/Kullaners/TinyKullan"
                             target="_blank"
@@ -1139,15 +1305,20 @@
                         <div class="p-info">
                             <h3>
                                 Kulchat
-                                <span
-                                    style="
-                                        color: #ef4444;
-                                        font-size: 0.7rem;
-                                        font-weight: 700;
-                                        vertical-align: middle;
-                                    "
-                                    >WIP</span
-                                >
+                                <span class="status-badge status-wip">WIP</span>
+                                <span class="star-count" id="stars-kc">
+                                    <svg
+                                        width="13"
+                                        height="13"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                    >
+                                        <path
+                                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                                        />
+                                    </svg>
+                                    ...
+                                </span>
                             </h3>
                             <span class="p-tag">Chat App · Tauri</span>
                         </div>
@@ -1245,6 +1416,33 @@
                             </svg>
                             Discord</a
                         >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="reveal">
+                <div class="section-label">About Me</div>
+                <h2 class="section-title">Hey, I'm Kullan</h2>
+            </div>
+            <div class="about-card reveal">
+                <div class="about-avatar">K</div>
+                <div class="about-text">
+                    <h3>15 · Bulgaria 🇧🇬</h3>
+                    <p>
+                        I'm passionate about IT and cyber security. I love
+                        learning new things, going outside, reading, and
+                        watching anime. Everything I build is open source — feel
+                        free to use it, learn from it, or contribute.
+                    </p>
+                    <div class="about-tags">
+                        <span>🛡️ Cyber Security</span>
+                        <span>💻 IT</span>
+                        <span>📖 Reading</span>
+                        <span>🎌 Anime</span>
+                        <span>🌿 Open Source</span>
                     </div>
                 </div>
             </div>
@@ -1573,6 +1771,39 @@
             document
                 .querySelectorAll(".reveal")
                 .forEach((el) => observer.observe(el));
+
+            // ═══ THEME TOGGLE ═══
+            const themeToggle = document.getElementById("theme-toggle");
+            const savedTheme = localStorage.getItem("theme") || "dark";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+            themeToggle.textContent = savedTheme === "light" ? "☀️" : "🌙";
+            themeToggle.addEventListener("click", () => {
+                const current =
+                    document.documentElement.getAttribute("data-theme");
+                const next = current === "light" ? "dark" : "light";
+                document.documentElement.setAttribute("data-theme", next);
+                localStorage.setItem("theme", next);
+                themeToggle.textContent = next === "light" ? "☀️" : "🌙";
+            });
+
+            // ═══ GITHUB STAR COUNTS ═══
+            async function fetchStars(repo, elId) {
+                const el = document.getElementById(elId);
+                if (!el) return;
+                try {
+                    const res = await fetch(
+                        `https://api.github.com/repos/Kullaners/${repo}`,
+                    );
+                    if (!res.ok) throw new Error("not found");
+                    const data = await res.json();
+                    const count = data.stargazers_count ?? 0;
+                    el.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> ${count}`;
+                } catch {
+                    el.textContent = "—";
+                }
+            }
+            fetchStars("TinyKullan", "stars-tk");
+            fetchStars("Kulchat", "stars-kc");
         </script>
     </body>
 </html>
