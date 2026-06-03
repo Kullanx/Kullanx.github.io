@@ -49,10 +49,15 @@
                 --footer-border: rgba(255, 255, 255, 0.03);
                 --orb-opacity-1: 0.05;
                 --orb-opacity-2: 0.04;
-                --star-color: rgba(255, 255, 255;
-                --gradient-1: linear-gradient(135deg, #10b981 0%, #34d399 40%, #6ee7b7 100%);
+                --gradient-1: linear-gradient(
+                    135deg,
+                    #10b981 0%,
+                    #34d399 40%,
+                    #6ee7b7 100%
+                );
                 --gradient-2: linear-gradient(135deg, #059669 0%, #10b981 100%);
-                --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.6), 0 8px 32px rgba(0, 0, 0, 0.4);
+                --shadow-card:
+                    0 1px 3px rgba(0, 0, 0, 0.6), 0 8px 32px rgba(0, 0, 0, 0.4);
             }
             [data-theme="light"] {
                 --bg: #f8fafc;
@@ -74,7 +79,9 @@
                 --footer-border: rgba(0, 0, 0, 0.06);
                 --orb-opacity-1: 0.03;
                 --orb-opacity-2: 0.02;
-                --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+                --shadow-card:
+                    0 1px 3px rgba(0, 0, 0, 0.08),
+                    0 8px 24px rgba(0, 0, 0, 0.06);
             }
             * {
                 margin: 0;
@@ -681,9 +688,21 @@
                 margin-left: 8px;
                 vertical-align: middle;
             }
-            .status-active { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
-            .status-wip { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); }
-            .status-archived { background: rgba(100, 116, 139, 0.12); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.25); }
+            .status-active {
+                background: rgba(16, 185, 129, 0.15);
+                color: #10b981;
+                border: 1px solid rgba(16, 185, 129, 0.3);
+            }
+            .status-wip {
+                background: rgba(239, 68, 68, 0.12);
+                color: #ef4444;
+                border: 1px solid rgba(239, 68, 68, 0.25);
+            }
+            .status-archived {
+                background: rgba(100, 116, 139, 0.12);
+                color: #94a3b8;
+                border: 1px solid rgba(100, 116, 139, 0.25);
+            }
 
             /* STAR COUNT */
             .star-count {
@@ -695,7 +714,9 @@
                 color: var(--accent-2);
                 margin-left: 6px;
             }
-            .star-count svg { opacity: 0.8; }
+            .star-count svg {
+                opacity: 0.8;
+            }
 
             /* THEME TOGGLE */
             #theme-toggle {
@@ -712,7 +733,10 @@
                 align-items: center;
                 touch-action: manipulation;
             }
-            #theme-toggle:hover { color: var(--text); background: var(--btn-ghost-hover-bg); }
+            #theme-toggle:hover {
+                color: var(--text);
+                background: var(--btn-ghost-hover-bg);
+            }
 
             /* ABOUT SECTION */
             .about-card {
@@ -740,9 +764,22 @@
                 color: #fff;
                 flex-shrink: 0;
             }
-            .about-text h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
-            .about-text p { font-size: 0.925rem; color: var(--text-dim); line-height: 1.65; }
-            .about-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+            .about-text h3 {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin-bottom: 8px;
+            }
+            .about-text p {
+                font-size: 0.925rem;
+                color: var(--text-dim);
+                line-height: 1.65;
+            }
+            .about-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-top: 14px;
+            }
             .about-tags span {
                 font-size: 0.7rem;
                 padding: 4px 10px;
