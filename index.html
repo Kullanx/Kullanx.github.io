@@ -137,7 +137,6 @@
                     env(safe-area-inset-bottom) env(safe-area-inset-left);
             }
 
-            /* CANVAS LAYERS */
             #starfield {
                 position: fixed;
                 top: 0;
@@ -148,7 +147,6 @@
                 pointer-events: none;
             }
 
-            /* ORBS */
             .orb {
                 position: fixed;
                 border-radius: 50%;
@@ -179,7 +177,6 @@
                 background: rgba(245, 158, 11, 0.025);
             }
 
-            /* MOUSE GLOW */
             #mouse-glow {
                 position: fixed;
                 width: 500px;
@@ -197,7 +194,6 @@
                 transition: opacity 0.6s;
             }
 
-            /* PAGE LOADER */
             #page-loader {
                 position: fixed;
                 inset: 0;
@@ -228,7 +224,6 @@
                 }
             }
 
-            /* SCROLL PROGRESS */
             #scroll-progress {
                 position: fixed;
                 top: 0;
@@ -239,7 +234,6 @@
                 transition: width 0.15s linear;
             }
 
-            /* NAV */
             nav {
                 position: fixed;
                 top: 0;
@@ -328,7 +322,6 @@
                 display: none;
             }
 
-            /* HERO */
             .hero {
                 position: relative;
                 z-index: 1;
@@ -521,7 +514,6 @@
                 }
             }
 
-            /* SECTIONS */
             section {
                 position: relative;
                 z-index: 1;
@@ -563,7 +555,6 @@
                 margin-bottom: 64px;
             }
 
-            /* PROJECT CARDS */
             .projects-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -745,7 +736,6 @@
                 transform: translateY(-1px);
             }
 
-            /* STATUS BADGES */
             .status-badge {
                 display: inline-block;
                 font-size: 0.65rem;
@@ -773,7 +763,6 @@
                 border: 1px solid rgba(100, 116, 139, 0.25);
             }
 
-            /* STAR COUNT */
             .star-count {
                 display: inline-flex;
                 align-items: center;
@@ -787,7 +776,6 @@
                 opacity: 0.8;
             }
 
-            /* THEME TOGGLE */
             #theme-toggle {
                 background: none;
                 border: 1px solid var(--btn-ghost-border);
@@ -807,7 +795,6 @@
                 background: var(--btn-ghost-hover-bg);
             }
 
-            /* ABOUT SECTION */
             .about-card {
                 background: var(--card-bg);
                 border: 1px solid var(--card-border);
@@ -858,7 +845,6 @@
                 color: var(--accent-glow);
             }
 
-            /* CTA */
             .cta-section {
                 text-align: center;
                 padding: 160px 24px;
@@ -936,7 +922,6 @@
                 font-size: 1.05rem;
             }
 
-            /* FOOTER */
             footer {
                 position: relative;
                 z-index: 1;
@@ -955,7 +940,6 @@
                 color: var(--accent-glow);
             }
 
-            /* ANIMATIONS */
             .reveal {
                 opacity: 0;
                 transform: translateY(50px);
@@ -966,7 +950,6 @@
                 transform: translateY(0);
             }
 
-            /* RESPONSIVE */
             @media (max-width: 1024px) {
                 section {
                     padding: 100px 20px;
@@ -1176,7 +1159,6 @@
         <div class="orb orb-3"></div>
         <div id="scroll-progress"></div>
 
-        <!-- NAV -->
         <nav id="navbar">
             <a href="#" class="nav-brand">
                 <img
@@ -1200,7 +1182,6 @@
             </div>
         </nav>
 
-        <!-- HERO -->
         <section class="hero">
             <div class="hero-logo-wrap">
                 <img
@@ -1243,7 +1224,6 @@
             </div>
         </section>
 
-        <!-- PROJECTS -->
         <section id="projects">
             <div class="reveal">
                 <div class="section-label">Projects</div>
@@ -1459,7 +1439,6 @@
             </div>
         </section>
 
-        <!-- ABOUT -->
         <section id="about">
             <div class="reveal">
                 <div class="section-label">About Me</div>
@@ -1503,7 +1482,6 @@
             </div>
         </section>
 
-        <!-- CTA -->
         <section class="cta-section">
             <div class="cta-card reveal">
                 <h2>Want to stay updated?</h2>
@@ -1571,7 +1549,6 @@
         </footer>
 
         <script>
-            // ═══ PAGE LOADER ═══
             window.addEventListener("load", () => {
                 setTimeout(
                     () =>
@@ -1582,7 +1559,6 @@
                 );
             });
 
-            // ═══ MOUSE GLOW + PARALLAX ORBS ═══
             const glow = document.getElementById("mouse-glow"),
                 orbs = document.querySelectorAll(".orb");
             document.addEventListener("mousemove", (e) => {
@@ -1600,14 +1576,12 @@
                 glow.style.opacity = "0";
             });
 
-            // ═══ SCROLL PROGRESS ═══
             const progress = document.getElementById("scroll-progress");
             addEventListener("scroll", () => {
                 const h = document.documentElement.scrollHeight - innerHeight;
                 progress.style.width = h > 0 ? (scrollY / h) * 100 + "%" : "0%";
             });
 
-            // ═══ STARFIELD + RIPPLES ═══
             (function () {
                 const c = document.getElementById("starfield"),
                     ctx = c.getContext("2d");
@@ -1737,7 +1711,6 @@
                 draw();
             })();
 
-            // ═══ HERO LOGO: 3D TILT + MAGNETIC + SPIN ═══
             const heroLogo = document.getElementById("heroLogo");
             if (heroLogo) {
                 let magX = 0,
@@ -1780,7 +1753,6 @@
                 });
             }
 
-            // ═══ CYCLING BADGE TEXT ═══
             const badgeTexts = [
                 "Open Source · Always Free",
                 "Join the Discord ↓",
@@ -1799,7 +1771,6 @@
                     }, 300);
                 }, 3500);
 
-            // ═══ NAV + REVEAL ═══
             const navbar = document.getElementById("navbar");
             addEventListener("scroll", () =>
                 navbar.classList.toggle("scrolled", scrollY > 50),
@@ -1816,7 +1787,6 @@
                 .querySelectorAll(".reveal")
                 .forEach((el) => observer.observe(el));
 
-            // ═══ THEME TOGGLE ═══
             const themeToggle = document.getElementById("theme-toggle");
             const savedTheme = localStorage.getItem("theme") || "dark";
             document.documentElement.setAttribute("data-theme", savedTheme);
@@ -1830,7 +1800,6 @@
                 themeToggle.textContent = next === "light" ? "☀️" : "🌙";
             });
 
-            // ═══ GITHUB STAR COUNTS ═══
             async function fetchStars(repo, elId) {
                 const el = document.getElementById(elId);
                 if (!el) return;
@@ -1849,7 +1818,6 @@
             fetchStars("TinyKullan", "stars-tk");
             fetchStars("Kulchat", "stars-kc");
 
-            // ═══ DISCORD PFP ═══
             const pfp = document.getElementById("aboutPfp");
             if (pfp) {
                 fetch("https://api.lanyard.rest/v1/users/1037391163507871884")
