@@ -19,6 +19,7 @@
         />
         <meta property="og:type" content="website" />
         <meta name="theme-color" content="#10b981" />
+        <meta name="author" content="Kullan" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -100,6 +101,23 @@
                 -webkit-font-smoothing: antialiased;
                 -webkit-tap-highlight-color: transparent;
                 overscroll-behavior: none;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                *,
+                *::before,
+                *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+                #starfield,
+                #ripple-canvas {
+                    display: none;
+                }
+                .reveal {
+                    opacity: 1;
+                    transform: none;
+                }
             }
             body {
                 overflow-x: hidden;
@@ -1417,15 +1435,20 @@
                     id="aboutPfp"
                     src=""
                     alt="Kullan"
-                    style="object-fit: cover"
+                    style="object-fit: cover; display: none"
                     onerror="
                         this.style.display = 'none';
-                        this.insertAdjacentHTML(
-                            'afterend',
-                            '<div class=about-avatar>KU</div>',
-                        );
+                        var fb = document.getElementById('pfpFallback');
+                        if (fb) fb.style.display = 'flex';
                     "
                 />
+                <div
+                    class="about-avatar"
+                    id="pfpFallback"
+                    style="display: flex"
+                >
+                    KU
+                </div>
                 <div class="about-text">
                     <h3 id="aboutName">15 · Bulgaria 🇧🇬</h3>
                     <p>
@@ -1809,6 +1832,9 @@
                         if (d.success) {
                             const u = d.data.discord_user;
                             pfp.src = `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.webp?size=128`;
+                            pfp.style.display = "";
+                            const fb = document.getElementById("pfpFallback");
+                            if (fb) fb.style.display = "none";
                             const nameEl = document.getElementById("aboutName");
                             if (nameEl)
                                 nameEl.textContent = `${u.display_name || u.username} · Bulgaria 🇧🇬`;
