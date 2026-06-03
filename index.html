@@ -667,6 +667,54 @@
                 background: rgba(16, 185, 129, 0.14);
                 border-color: rgba(16, 185, 129, 0.35);
             }
+            .project-card-body .terminal {
+                margin-top: 16px;
+                background: #060b17;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+            }
+            .terminal .tbar {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                padding: 10px 16px;
+            }
+            .terminal .tbar span {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
+            .terminal .tbar span:nth-child(1) {
+                background: #ef4444;
+            }
+            .terminal .tbar span:nth-child(2) {
+                background: #eab308;
+            }
+            .terminal .tbar span:nth-child(3) {
+                background: #22c55e;
+            }
+            .terminal pre {
+                padding: 0 16px 14px;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 0.75rem;
+                line-height: 1.8;
+                color: var(--text-dim);
+                overflow-x: auto;
+            }
+            .terminal .str {
+                color: #a5d6ff;
+            }
+            .terminal .kw {
+                color: #34d399;
+            }
+            .terminal .fn {
+                color: #67e8f9;
+            }
+            .terminal .cmt {
+                color: #4b5563;
+                font-style: italic;
+            }
             .project-card-footer {
                 padding: 20px 34px;
                 border-top: 1px solid var(--footer-border);
@@ -1247,6 +1295,17 @@
                         <div class="p-tech">
                             <span>Python</span><span>OpenCV</span
                             ><span>AutoHotkey</span><span>pynput</span>
+                        </div>
+                        <div class="terminal">
+                            <div class="tbar">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <pre><span class="cmt"># Clone and install</span>
+<span class="kw">git clone</span> <span class="str">https://github.com/Kullaners/TinyKullan.git</span>
+<span class="kw">cd</span> TinyKullan
+<span class="fn">python</span> <span class="str">"python installer.bat"</span>
+<span class="fn">start</span> TinyKullan.vbs
+<span class="cmt"># F5=Record F6=Play F7=Loop 🚀</span></pre>
                         </div>
                     </div>
                     <div class="project-card-footer">
