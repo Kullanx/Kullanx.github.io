@@ -1272,100 +1272,92 @@
             }
             @media (max-width: 480px) {
                 .top-nav {
-                    padding: 10px 10px;
-                    gap: 4px;
+                    padding: 8px 8px;
+                    gap: 3px;
                 }
                 .top-nav-logo {
-                    width: 26px;
-                    height: 26px;
+                    width: 24px;
+                    height: 24px;
                     border-radius: 6px;
                 }
                 .top-nav-logo img {
-                    width: 16px;
-                    height: 16px;
+                    width: 14px;
+                    height: 14px;
                 }
                 .nav-shape {
-                    padding: 6px 10px;
-                    font-size: 0.68rem;
-                    border-radius: 8px;
+                    padding: 5px 8px;
+                    font-size: 0.65rem;
+                    border-radius: 6px;
                 }
                 .nav-discord {
-                    padding: 6px 12px !important;
-                }
-                .hero {
-                    padding: 90px 14px 50px;
-                }
-                .hero h1 {
-                    font-size: 1.8rem;
-                }
-                .hero p {
-                    font-size: 0.88rem;
-                    line-height: 1.6;
-                }
-                .hero-logo-cube {
-                    width: 70px;
-                    height: 70px;
-                    border-radius: 18px;
-                }
-                .hero-logo-cube img {
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 12px;
-                }
-                section {
-                    padding: 60px 14px;
-                }
-                .section-title {
-                    font-size: 1.5rem;
-                }
-                .section-label {
+                    padding: 5px 10px !important;
                     font-size: 0.65rem;
                 }
-                .project-card-header {
-                    padding: 22px 14px 12px;
-                    gap: 10px;
+                .hero {
+                    padding: 80px 12px 44px;
                 }
-                .project-card-body {
-                    padding: 0 14px 16px;
+                .hero h1 {
+                    font-size: 1.65rem;
                 }
-                .project-card-footer {
-                    padding: 12px 14px;
-                    flex-direction: column;
+                .hero p {
+                    font-size: 0.82rem;
+                    line-height: 1.5;
                 }
-                .project-card-footer a {
-                    justify-content: center;
-                    width: 100%;
+                .hero-logo-cube {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 16px;
                 }
-                .p-icon {
-                    width: 40px;
-                    height: 40px;
+                .hero-logo-cube img {
+                    width: 42px;
+                    height: 42px;
                     border-radius: 10px;
                 }
+                section {
+                    padding: 50px 12px;
+                }
+                .section-title {
+                    font-size: 1.35rem;
+                }
+                .section-label {
+                    font-size: 0.6rem;
+                }
+                .project-card-header {
+                    padding: 20px 12px 10px;
+                    gap: 8px;
+                }
+                .project-card-body {
+                    padding: 0 12px 14px;
+                }
+                .project-card-footer {
+                    padding: 10px 12px;
+                }
+                .p-icon {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 8px;
+                }
                 .about-card {
-                    flex-direction: column;
-                    padding: 24px 16px;
-                    gap: 14px;
-                    align-items: center;
-                    text-align: center;
+                    padding: 22px 14px;
+                    gap: 12px;
                 }
                 .about-avatar {
-                    width: 50px;
-                    height: 50px;
-                    font-size: 1.3rem;
+                    width: 44px;
+                    height: 44px;
+                    font-size: 1.1rem;
                 }
                 .cta-card {
-                    padding: 36px 16px;
-                    margin: 0 4px;
+                    padding: 32px 14px;
                 }
                 .cta-card h2 {
-                    font-size: 1.3rem;
+                    font-size: 1.2rem;
                 }
                 .cta-card p {
-                    font-size: 0.88rem;
+                    font-size: 0.82rem;
                 }
                 footer {
-                    padding: 24px 14px;
-                    font-size: 0.7rem;
+                    padding: 20px 12px;
+                    font-size: 0.65rem;
                 }
                 #glass-grid {
                     grid-template-columns: repeat(3, 1fr);
@@ -1873,6 +1865,51 @@
                             t.style.removeProperty("--ry");
                         }
                     });
+                });
+                function handleTouch(e) {
+                    if (!e.touches.length) return;
+                    const t = e.touches[0];
+                    cursorX = t.clientX;
+                    cursorY = t.clientY;
+                    hasCursor = true;
+                    const shard = findTileAtCursor(t.clientX, t.clientY);
+                    tiles.forEach((sq) => {
+                        if (sq === shard) {
+                            const r = sq.getBoundingClientRect();
+                            const ox = t.clientX - r.left,
+                                oy = t.clientY - r.top;
+                            sq.style.setProperty("--x", ox + "px");
+                            sq.style.setProperty("--y", oy + "px");
+                            const angle =
+                                Math.atan2(
+                                    oy - r.height / 2,
+                                    ox - r.width / 2,
+                                ) *
+                                    (180 / Math.PI) +
+                                90;
+                            sq.style.setProperty("--angle", angle + "deg");
+                            const dx = (ox / r.width) * 2 - 1,
+                                dy = (oy / r.height) * 2 - 1;
+                            sq.style.setProperty("--rx", -dy * 30 + "deg");
+                            sq.style.setProperty("--ry", dx * 30 + "deg");
+                        } else {
+                            sq.style.removeProperty("--rx");
+                            sq.style.removeProperty("--ry");
+                        }
+                    });
+                }
+                document.addEventListener("touchmove", handleTouch, {
+                    passive: true,
+                });
+                document.addEventListener("touchstart", handleTouch, {
+                    passive: true,
+                });
+                document.addEventListener("touchend", () => {
+                    tiles.forEach((t) => {
+                        t.style.removeProperty("--rx");
+                        t.style.removeProperty("--ry");
+                    });
+                    hasCursor = false;
                 });
                 document.addEventListener("mouseleave", () => {
                     tiles.forEach((t) => {
