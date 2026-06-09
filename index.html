@@ -2,7 +2,10 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
         <title>Kullan Projects</title>
         <meta
             name="description"
@@ -1272,92 +1275,129 @@
             }
             @media (max-width: 480px) {
                 .top-nav {
-                    padding: 8px 8px;
-                    gap: 3px;
+                    padding: 6px 6px;
+                    gap: 2px;
                 }
                 .top-nav-logo {
-                    width: 24px;
-                    height: 24px;
-                    border-radius: 6px;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 5px;
                 }
                 .top-nav-logo img {
-                    width: 14px;
-                    height: 14px;
+                    width: 12px;
+                    height: 12px;
                 }
                 .nav-shape {
-                    padding: 5px 8px;
-                    font-size: 0.65rem;
-                    border-radius: 6px;
+                    padding: 4px 7px;
+                    font-size: 0.6rem;
+                    border-radius: 5px;
                 }
                 .nav-discord {
-                    padding: 5px 10px !important;
-                    font-size: 0.65rem;
-                }
-                .hero {
-                    padding: 80px 12px 44px;
-                }
-                .hero h1 {
-                    font-size: 1.65rem;
-                }
-                .hero p {
-                    font-size: 0.82rem;
-                    line-height: 1.5;
-                }
-                .hero-logo-cube {
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 16px;
-                }
-                .hero-logo-cube img {
-                    width: 42px;
-                    height: 42px;
-                    border-radius: 10px;
-                }
-                section {
-                    padding: 50px 12px;
-                }
-                .section-title {
-                    font-size: 1.35rem;
-                }
-                .section-label {
+                    padding: 4px 8px !important;
                     font-size: 0.6rem;
                 }
-                .project-card-header {
-                    padding: 20px 12px 10px;
-                    gap: 8px;
+                .hero {
+                    padding: 70px 10px 40px;
+                    max-width: 100%;
                 }
-                .project-card-body {
-                    padding: 0 12px 14px;
+                .hero h1 {
+                    font-size: 1.5rem;
                 }
-                .project-card-footer {
-                    padding: 10px 12px;
+                .hero p {
+                    font-size: 0.78rem;
+                    line-height: 1.45;
                 }
-                .p-icon {
+                .hero-logo-cube {
+                    width: 54px;
+                    height: 54px;
+                    border-radius: 14px;
+                }
+                .hero-logo-cube img {
                     width: 36px;
                     height: 36px;
                     border-radius: 8px;
                 }
+                .hero-logo-row {
+                    margin-bottom: 32px;
+                    gap: 10px;
+                }
+                section {
+                    padding: 44px 10px;
+                }
+                .section-title {
+                    font-size: 1.25rem;
+                }
+                .section-label {
+                    font-size: 0.58rem;
+                }
+                .section-label::before {
+                    width: 24px;
+                }
+                .section-subtitle {
+                    font-size: 0.82rem;
+                    margin-bottom: 32px;
+                }
+                .project-card-header {
+                    padding: 18px 10px 8px;
+                    gap: 8px;
+                }
+                .project-card-body {
+                    padding: 0 10px 12px;
+                }
+                .project-card-body p {
+                    font-size: 0.78rem;
+                }
+                .project-card-footer {
+                    padding: 8px 10px;
+                }
+                .project-card-footer a {
+                    padding: 6px 12px;
+                    font-size: 0.72rem;
+                }
+                .p-icon {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 7px;
+                }
+                .terminal pre {
+                    font-size: 0.65rem;
+                    padding: 0 10px 10px;
+                }
+                .terminal .tbar {
+                    padding: 7px 10px;
+                }
                 .about-card {
-                    padding: 22px 14px;
-                    gap: 12px;
+                    padding: 20px 12px;
+                    gap: 10px;
                 }
                 .about-avatar {
-                    width: 44px;
-                    height: 44px;
-                    font-size: 1.1rem;
+                    width: 40px;
+                    height: 40px;
+                    font-size: 1rem;
+                }
+                .about-text h3 {
+                    font-size: 0.95rem;
+                }
+                .about-text p {
+                    font-size: 0.78rem;
                 }
                 .cta-card {
-                    padding: 32px 14px;
+                    padding: 28px 12px;
                 }
                 .cta-card h2 {
-                    font-size: 1.2rem;
+                    font-size: 1.1rem;
                 }
                 .cta-card p {
-                    font-size: 0.82rem;
+                    font-size: 0.78rem;
+                }
+                .btn-primary,
+                .btn-secondary {
+                    padding: 10px 18px;
+                    font-size: 0.78rem;
                 }
                 footer {
-                    padding: 20px 12px;
-                    font-size: 0.65rem;
+                    padding: 18px 10px;
+                    font-size: 0.62rem;
                 }
                 #glass-grid {
                     grid-template-columns: repeat(3, 1fr);
@@ -1898,12 +1938,8 @@
                         }
                     });
                 }
-                document.addEventListener("touchmove", handleTouch, {
-                    passive: true,
-                });
-                document.addEventListener("touchstart", handleTouch, {
-                    passive: true,
-                });
+                document.addEventListener("touchmove", handleTouch);
+                document.addEventListener("touchstart", handleTouch);
                 document.addEventListener("touchend", () => {
                     tiles.forEach((t) => {
                         t.style.removeProperty("--rx");
