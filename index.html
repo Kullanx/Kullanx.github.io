@@ -614,7 +614,7 @@
             /* ─── Project Cards ─── */
             .projects-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+                grid-template-columns: repeat(3, 1fr);
                 gap: 24px;
                 perspective: 800px;
             }
@@ -1194,6 +1194,11 @@
                 transform: translateY(0);
             }
 
+            @media (max-width: 1200px) {
+                .projects-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+                }
+            }
             @media (max-width: 1024px) {
                 .top-nav {
                     padding: 14px 20px;
@@ -1745,11 +1750,9 @@
                     </div>
                     <div class="project-card-body">
                         <p>
-                            Desktop media downloader supporting 15 platforms —
-                            TikTok, YouTube, Instagram, Twitter, and more.
-                            Downloads videos as MP4 (up to 4K) or extracts audio
-                            to MP3 with ID3 tags. Built-in waveform trimmer,
-                            download queue, keyboard shortcuts, and auto-save.
+                            🃏 Desktop media downloader for 15 platforms.
+                            Download videos as MP4 (up to 4K) or extract audio
+                            to MP3. Waveform trimmer, queue, keyboard shortcuts.
                         </p>
                         <div class="p-tech">
                             <span>Python</span><span>Zig</span
