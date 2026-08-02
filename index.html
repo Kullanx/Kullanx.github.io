@@ -6,6 +6,7 @@
         <title>Kullan.py</title>
         <meta name="description" content="Projects and experiments by Kullan." />
         <meta name="theme-color" content="#102523" />
+        <link rel="icon" href="coneaoir.ico" />
         <meta property="og:title" content="Kullan.py" />
         <meta property="og:description" content="Projects and experiments by Kullan." />
         <meta property="og:type" content="website" />
@@ -23,41 +24,81 @@
             .nav { position: absolute; z-index: 8; top: 0; left: 50%; display: flex; justify-content: space-between; width: min(var(--max), calc(100% - 48px)); padding: 24px 0; transform: translateX(-50%); color: rgba(255,250,240,.76); font: 12px "DM Mono", monospace; }
             .nav-links { display: flex; gap: 20px; }
             .nav a { transition: opacity .2s ease; } .nav a:hover { opacity: .58; }
+            .forest .nav { color: rgba(44,82,51,.75); }
             .tilt-card { transform-style: preserve-3d; will-change: transform; transition: transform .38s cubic-bezier(.2,.75,.25,1), box-shadow .38s ease, border-color .38s ease; }
+            .reveal { opacity: 0; }
+            .reveal.revealed { animation: fade-in .9s ease-out both; }
+            @keyframes fade-in { to { opacity: 1; } }
 
-            /* 01 — Rainy forest */
-            .forest { display: grid; place-items: center; background: linear-gradient(180deg, #0b1c22 0%, #102c2c 71%, #183c31 100%); }
-            .forest::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 12% 17%, rgba(255,203,97,.14), transparent 18%), linear-gradient(180deg, rgba(0,0,0,.2), transparent 45%); }
-            .sun { position: absolute; z-index: 1; top: clamp(66px, 11vh, 118px); left: max(7vw, calc(50% - 590px)); width: clamp(56px, 8vw, 108px); aspect-ratio: 1; border-radius: 50%; background: #e8bd75; box-shadow: 0 0 40px rgba(246,189,96,.22); }
-            .rain { position: absolute; z-index: 2; top: -50px; width: 2px; height: 37px; border-radius: 4px; background: var(--rain); opacity: .32; transform: rotate(12deg); animation: fall 2.8s linear infinite; }
+            /* 01 — Misty morning */
+            .forest { display: grid; place-items: center; background: linear-gradient(180deg, #dcecd6 0%, #c6e0c0 45%, #a6c9a4 100%); }
+            .forest::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 15% 16%, rgba(255,250,225,.5), transparent 26%), linear-gradient(180deg, rgba(255,255,255,.3), transparent 45%); }
+            .sun { position: absolute; z-index: 1; top: clamp(70px, 12vh, 124px); left: max(7vw, calc(50% - 590px)); width: clamp(70px, 9.5vw, 122px); aspect-ratio: 1; border-radius: 50%; background: #fdf3d4; box-shadow: 0 0 70px rgba(255,244,205,.5), 0 0 160px rgba(255,244,205,.22); }
+            .sun::before { content: ""; position: absolute; inset: -70px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, rgba(255,244,200,.16) 0deg 12deg, transparent 12deg 26deg); filter: blur(7px); animation: rays-spin 46s linear infinite; }
+            @keyframes rays-spin { to { transform: rotate(360deg); } }
+            .rain { display: none; }
+            .fog { position: absolute; z-index: 2; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.5), rgba(255,255,255,0)); animation: fog-drift 26s ease-in-out infinite alternate; }
+            .fog-one { top: 34%; left: -8%; width: 70vw; height: 34vh; } .fog-two { top: 48%; right: -10%; width: 80vw; height: 40vh; animation-delay: -12s; } .fog-three { top: 26%; left: 30%; width: 60vw; height: 26vh; opacity: .7; animation-delay: -6s; } .fog-four { top: 60%; left: 16%; width: 90vw; height: 36vh; opacity: .6; animation-delay: -18s; } .fog-five { top: 74%; left: -18%; width: 110vw; height: 30vh; opacity: .5; animation-delay: -9s; }
+            @keyframes fog-drift { to { transform: translateX(50px); opacity: .7; } }
+            .sun { animation: sun-breathe 6s ease-in-out infinite; }
+            @keyframes sun-breathe { 50% { box-shadow: 0 0 95px rgba(255,244,205,.6), 0 0 210px rgba(255,244,205,.3); } }
+            .mist { position: absolute; z-index: 2; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.45), rgba(255,255,255,0)); filter: blur(2px); animation: mist-rise linear infinite; }
+            .m1 { top: 62%; left: 7%; width: 44px; height: 44px; animation-duration: 16s; } .m2 { top: 55%; left: 88%; width: 56px; height: 56px; animation-duration: 21s; animation-delay: -7s; } .m3 { top: 70%; left: 30%; width: 34px; height: 34px; animation-duration: 14s; animation-delay: -4s; } .m4 { top: 66%; left: 62%; width: 40px; height: 40px; animation-duration: 19s; animation-delay: -11s; } .m5 { top: 58%; left: 45%; width: 26px; height: 26px; animation-duration: 13s; animation-delay: -9s; } .m6 { top: 72%; left: 78%; width: 32px; height: 32px; animation-duration: 17s; animation-delay: -2s; }
+            @keyframes mist-rise { to { transform: translate(70px, -140px); opacity: 0; } }
+            .dew { position: absolute; z-index: 2; top: -30px; width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.85); box-shadow: 0 0 8px rgba(255,255,255,.55); animation: dew-fall linear infinite; }
+            .d1 { left: 9%; animation-duration: 8s; } .d2 { left: 19%; animation-duration: 10s; animation-delay: -4s; } .d3 { left: 33%; animation-duration: 7s; animation-delay: -2s; } .d4 { left: 47%; animation-duration: 11s; animation-delay: -7s; } .d5 { left: 58%; animation-duration: 8.5s; animation-delay: -1s; } .d6 { left: 69%; animation-duration: 9.5s; animation-delay: -6s; } .d7 { left: 81%; animation-duration: 7.5s; animation-delay: -3s; } .d8 { left: 92%; animation-duration: 10.5s; animation-delay: -5s; }
+            @keyframes dew-fall { to { transform: translateY(118vh) translateX(46px); opacity: 0; } }
+            .petal { position: absolute; z-index: 2; top: -30px; width: 9px; height: 9px; border-radius: 60% 10% 60% 10%; background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(214,238,214,.55)); opacity: .75; animation: petal-fall linear infinite; }
+            .p1 { left: 6%; animation-duration: 9s; } .p2 { left: 16%; animation-duration: 12s; animation-delay: -4s; } .p3 { left: 28%; animation-duration: 10s; animation-delay: -7s; } .p4 { left: 41%; animation-duration: 13s; animation-delay: -2s; } .p5 { left: 55%; animation-duration: 9.5s; animation-delay: -9s; } .p6 { left: 67%; animation-duration: 11s; animation-delay: -1s; } .p7 { left: 79%; animation-duration: 10.5s; animation-delay: -6s; } .p8 { left: 91%; animation-duration: 12.5s; animation-delay: -3s; }
+            @keyframes petal-fall { 0% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(26px, 30vh) rotate(130deg); } 50% { transform: translate(-16px, 60vh) rotate(270deg); } 75% { transform: translate(20px, 90vh) rotate(410deg); } 100% { transform: translate(-6px, 120vh) rotate(540deg); opacity: .4; } }
+            .firefly { position: absolute; z-index: 3; width: 6px; height: 6px; border-radius: 50%; background: #e8ffb0; box-shadow: 0 0 14px 4px rgba(232,255,176,.55); animation: firefly-float ease-in-out infinite; }
+            .fy1 { top: 64%; left: 12%; animation-duration: 7s; } .fy2 { top: 58%; left: 30%; animation-duration: 9s; animation-delay: -2s; } .fy3 { top: 66%; left: 52%; animation-duration: 8s; animation-delay: -5s; } .fy4 { top: 60%; left: 74%; animation-duration: 10s; animation-delay: -7s; } .fy5 { top: 70%; left: 88%; animation-duration: 7.5s; animation-delay: -3s; } .fy6 { top: 76%; left: 42%; animation-duration: 8.5s; animation-delay: -1s; }
+            @keyframes firefly-float { 0% { transform: translate(0, 0); opacity: .9; } 30% { transform: translate(18px, -26px); opacity: .35; } 60% { transform: translate(-14px, -10px); opacity: 1; } 100% { transform: translate(10px, 14px); opacity: .55; } }
+            .breeze { position: absolute; z-index: 2; height: 2px; width: 150px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent); animation: breeze-flow linear infinite; }
+            .b1 { top: 30%; left: -10%; animation-duration: 11s; } .b2 { top: 44%; left: -20%; width: 210px; animation-duration: 14s; animation-delay: -5s; } .b3 { top: 68%; left: -15%; width: 115px; animation-duration: 9s; animation-delay: -8s; }
+            @keyframes breeze-flow { to { transform: translateX(125vw); } }
+            .butterfly { position: absolute; z-index: 3; top: 42%; left: -6%; width: 20px; height: 16px; animation: butterfly-fly 30s linear infinite; }
+            .butterfly::before, .butterfly::after { content: ""; position: absolute; top: 0; width: 10px; height: 15px; background: radial-gradient(circle at 30% 30%, rgba(255,226,180,.95), rgba(240,170,120,.7)); border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%; box-shadow: 0 0 6px rgba(255,214,150,.6); }
+            .butterfly::before { left: 0; transform-origin: 100% 50%; animation: flutter .25s ease-in-out infinite alternate; }
+            .butterfly::after { right: 0; transform-origin: 0% 50%; animation: flutter .25s ease-in-out infinite alternate-reverse; }
+            @keyframes flutter { from { transform: rotateY(0deg); } to { transform: rotateY(60deg); } }
+            @keyframes butterfly-fly { 0% { transform: translate(0, 0) rotate(5deg); } 20% { transform: translate(24vw, -5vh) rotate(-4deg); } 45% { transform: translate(52vw, 2vh) rotate(6deg); } 70% { transform: translate(80vw, -4vh) rotate(-5deg); } 100% { transform: translate(116vw, 1vh) rotate(5deg); } }
+            .grass { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 1.4s ease-in-out infinite alternate; }
+            .grass-two { animation-duration: 1.1s; animation-direction: alternate-reverse; }
+            .tree1, .tree2, .tree3, .tree4, .tree5, .tree6, .tree7 { transform-box: fill-box; transform-origin: 50% 100%; animation: sway ease-in-out infinite alternate; }
+            .tree1 { animation-duration: 6s; } .tree2 { animation-duration: 7.5s; animation-direction: alternate-reverse; } .tree3 { animation-duration: 5.5s; } .tree4 { animation-duration: 6.8s; animation-direction: alternate-reverse; } .tree5 { animation-duration: 5s; } .tree6 { animation-duration: 7s; animation-direction: alternate-reverse; } .tree7 { animation-duration: 6.2s; }
+            @keyframes sway { from { rotate: -1.6deg; } to { rotate: 1.6deg; } }
             .r1 { left: 8%; animation-delay: -.2s; } .r2 { left: 16%; height: 30px; animation-delay: -.8s; } .r3 { left: 27%; height: 54px; animation-delay: -1.2s; } .r4 { left: 39%; height: 26px; animation-delay: -.4s; } .r5 { left: 51%; height: 58px; animation-delay: -1.4s; } .r6 { left: 63%; height: 35px; animation-delay: -.6s; } .r7 { left: 75%; height: 54px; animation-delay: -1s; } .r8 { left: 87%; height: 30px; animation-delay: -.1s; } .r9 { left: 93%; height: 47px; animation-delay: -1.1s; }
             @keyframes fall { to { transform: translate3d(-28px, 116vh, 0) rotate(12deg); } }
             .forest-art { position: absolute; right: 0; bottom: 0; left: 0; z-index: 1; width: 100%; height: min(76vw, 720px); }
             .forest-copy { margin-top: -4vh; text-align: center; }
-            h1 { margin: 0; font-size: clamp(3.4rem, 10vw, 7.1rem); letter-spacing: -.085em; line-height: .9; }
-            .intro { width: fit-content; max-width: 100%; margin: 34px auto 0; padding: 16px 21px; border: 1px solid rgba(217,245,236,.14); border-radius: 10px; background: rgba(5,18,19,.35); color: rgba(255,250,240,.9); text-align: left; font: 14px/1.75 "DM Mono", monospace; box-shadow: 0 16px 35px rgba(0,0,0,.14); backdrop-filter: blur(5px); }
+            h1 { margin: 0; font-size: clamp(3.4rem, 10vw, 7.1rem); letter-spacing: -.085em; line-height: .9; color: #2c5233; }
+            .intro { width: fit-content; max-width: 100%; margin: 34px auto 0; padding: 16px 21px; border: 1px solid rgba(255,255,255,.24); border-radius: 10px; background: rgba(22,48,32,.42); color: rgba(255,252,242,.95); text-align: left; font: 14px/1.75 "DM Mono", monospace; box-shadow: 0 16px 35px rgba(0,0,0,.16); backdrop-filter: blur(6px); }
             .prompt { color: #f6bd60; }
-            .scroll { display: inline-block; margin-top: 26px; color: rgba(255,250,240,.67); font: 11px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
-            .scroll::after { content: "↓"; margin-left: 8px; }
+            .intro { display: flex; align-items: center; gap: 16px; }
+            .lanyard-pfp { width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(255,255,255,.3); flex: none; }
+            .lanyard-info { display: grid; gap: 3px; }
+            .lanyard-tag { display: inline-flex; align-items: center; }
+            .lanyard-tag .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-left: 8px; }
 
             /* 02 — Beach */
-            .beach { display: flex; align-items: center; min-height: 100svh; padding: 94px 0; background: #72d9e7 url("assets/minimal-beach-v2.png") center center / cover no-repeat; color: var(--cream); }
+            .beach { display: flex; align-items: center; min-height: 100svh; padding: 52px 0; background: #72d9e7 url("assets/minimal-beach-v2.png") center center / cover no-repeat; color: var(--cream); }
             .beach::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(4,29,40,.22), rgba(4,29,40,.06) 52%, transparent); }
             .beach .nav { color: rgba(7,29,43,.72); }
-            .beach-card { width: min(590px, 100%); padding: clamp(25px, 5vw, 46px); border: 1px solid rgba(214,245,248,.21); border-radius: 15px; background: linear-gradient(135deg, rgba(10,37,50,.86), rgba(3,20,32,.73)); box-shadow: 0 20px 60px rgba(10,75,95,.17); backdrop-filter: blur(12px); }
+            .beach-card { width: min(590px, 100%); padding: clamp(20px, 4vw, 34px); border: 1px solid rgba(214,245,248,.21); border-radius: 15px; background: linear-gradient(135deg, rgba(10,37,50,.86), rgba(3,20,32,.73)); box-shadow: 0 20px 60px rgba(10,75,95,.17); backdrop-filter: blur(12px); }
             .beach-card:hover { border-color: rgba(214,245,248,.4); }
             .eyebrow { margin: 0 0 10px; color: rgba(188,234,242,.72); font: 11px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
             h2 { margin: 0; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.07em; line-height: .96; }
-            .beach-card > p:not(.eyebrow) { max-width: 410px; margin: 17px 0 28px; color: rgba(235,250,250,.76); font-size: 14px; line-height: 1.65; }
+            .beach-card > p:not(.eyebrow) { max-width: 410px; margin: 13px 0 20px; color: rgba(235,250,250,.76); font-size: 14px; line-height: 1.65; }
             .project-list { display: grid; gap: 8px; }
-            .project { display: grid; grid-template-columns: 29px 1fr auto; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid rgba(188,234,242,.17); transition: transform .2s ease, padding-left .2s ease; }
+            .project { display: grid; grid-template-columns: 29px 1fr auto; align-items: center; gap: 14px; padding: 9px 0; border-top: 1px solid rgba(188,234,242,.17); transition: transform .2s ease, padding-left .2s ease; }
             .project:hover { padding-left: 7px; transform: translateX(4px); }
             .project-number { color: rgba(188,234,242,.48); font: 11px "DM Mono", monospace; }
             .project h3 { margin: 0; font-size: 15px; letter-spacing: -.025em; }
             .project small { display: block; margin-top: 3px; color: rgba(220,246,248,.61); font-size: 12px; }
             .project-link { padding-bottom: 2px; border-bottom: 1px solid rgba(188,234,242,.55); color: var(--sea-ink); font: 11px "DM Mono", monospace; }
             .project-link:hover { color: #fff; border-color: #fff; }
-            .about-line { margin: 29px 0 0; padding-top: 20px; border-top: 1px solid rgba(188,234,242,.17); color: rgba(235,250,250,.75); font-size: 13px; line-height: 1.65; }
+            .about-line { margin: 20px 0 0; padding-top: 15px; border-top: 1px solid rgba(188,234,242,.17); color: rgba(235,250,250,.75); font-size: 13px; line-height: 1.65; }
             .about-line a { color: #f2a08b; font-family: "DM Mono", monospace; }
             .cloud { position: absolute; z-index: 1; width: 170px; height: 35px; border-radius: 40px; background: rgba(255,255,255,.55); filter: blur(.2px); }
             .cloud::before, .cloud::after { content: ""; position: absolute; bottom: 0; border-radius: 50%; background: inherit; }
@@ -74,8 +115,6 @@
             .crab-shore { right: 15%; bottom: 16%; animation: crab-circle 11s linear infinite; } .crab-water { left: 58%; bottom: 35%; transform: scale(.72); animation: bob 4.5s ease-in-out infinite; }
             @keyframes crab-circle { 0% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(34px,-13px) rotate(9deg); } 50% { transform: translate(50px,16px) rotate(0deg); } 75% { transform: translate(14px,30px) rotate(-9deg); } 100% { transform: translate(0,0) rotate(0deg); } }
             @keyframes bob { 50% { transform: translateY(-7px) scale(.72); } }
-            .beach footer { margin-top: 25px; color: rgba(188,234,242,.48); font: 11px "DM Mono", monospace; }
-
             /* 03 — Underwater about */
             .underwater { display: flex; align-items: center; min-height: 100svh; padding: 100px 0; background: linear-gradient(180deg, #245f77 0%, #0d3855 42%, #061d35 100%); }
             .underwater::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(2,17,34,.16), transparent 45%, rgba(2,17,34,.18)); }
@@ -98,32 +137,58 @@
                 .wrap, .nav { width: min(var(--max), calc(100% - 32px)); }
                 .nav { padding: 19px 0; } .nav-links { gap: 14px; }
                 .forest-copy { margin-top: -9vh; } .forest-art { width: 154%; left: -27%; height: min(113vw, 680px); } .sun { left: 9%; }
-                .beach { align-items: flex-start; padding-top: 112px; background-position: 61% center; } .beach-card { background: rgba(5,25,38,.9); }
+                .beach { align-items: flex-start; padding-top: 92px; background-position: 61% center; } .beach-card { background: rgba(5,25,38,.9); }
                 .project { grid-template-columns: 23px 1fr; gap: 10px; } .project-link { grid-column: 2; justify-self: start; margin-top: 2px; }
                 .cloud-one { right: 16%; top: 14%; } .cloud-two { display: none; } .birds { top: 11%; }
                 .crab-shore { right: 9%; bottom: 9%; } .crab-water { left: 54%; bottom: 26%; }
                 .underwater { align-items: flex-start; padding-top: 112px; }
             }
-            @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; scroll-snap-type: none; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+            @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; scroll-snap-type: none; } *, *::before, *::after { animation: none !important; transition: none !important; } .reveal { opacity: 1; } }
         </style>
     </head>
     <body>
         <section class="screen forest" id="home">
-            <nav class="nav" aria-label="Main navigation"><a href="#home">Kullan.py</a><span class="nav-links"><a href="#projects">projects</a><a href="#about">about</a></span></nav>
+            <nav class="nav" aria-label="Main navigation"><a href="#home">Kullan.py</a><span class="nav-links"><a href="#projects">Projects</a><a href="#about">About me</a></span></nav>
             <div class="sun" aria-hidden="true"></div>
             <i class="rain r1"></i><i class="rain r2"></i><i class="rain r3"></i><i class="rain r4"></i><i class="rain r5"></i><i class="rain r6"></i><i class="rain r7"></i><i class="rain r8"></i><i class="rain r9"></i>
-            <main class="wrap forest-copy"><h1>Kullan.py</h1><div class="intro tilt-card"><span class="prompt">$</span> whoami<br /><span class="prompt">&gt;</span> open source developer</div><a class="scroll" href="#projects">follow the trail</a></main>
+            <div class="fog fog-one" aria-hidden="true"></div><div class="fog fog-two" aria-hidden="true"></div><div class="fog fog-three" aria-hidden="true"></div><div class="fog fog-four" aria-hidden="true"></div><div class="fog fog-five" aria-hidden="true"></div>
+            <span class="mist m1" aria-hidden="true"></span><span class="mist m2" aria-hidden="true"></span><span class="mist m3" aria-hidden="true"></span><span class="mist m4" aria-hidden="true"></span><span class="mist m5" aria-hidden="true"></span><span class="mist m6" aria-hidden="true"></span>
+            <span class="dew d1" aria-hidden="true"></span><span class="dew d2" aria-hidden="true"></span><span class="dew d3" aria-hidden="true"></span><span class="dew d4" aria-hidden="true"></span><span class="dew d5" aria-hidden="true"></span><span class="dew d6" aria-hidden="true"></span><span class="dew d7" aria-hidden="true"></span><span class="dew d8" aria-hidden="true"></span>
+            <span class="petal p1" aria-hidden="true"></span><span class="petal p2" aria-hidden="true"></span><span class="petal p3" aria-hidden="true"></span><span class="petal p4" aria-hidden="true"></span><span class="petal p5" aria-hidden="true"></span><span class="petal p6" aria-hidden="true"></span><span class="petal p7" aria-hidden="true"></span><span class="petal p8" aria-hidden="true"></span>
+            <span class="firefly fy1" aria-hidden="true"></span><span class="firefly fy2" aria-hidden="true"></span><span class="firefly fy3" aria-hidden="true"></span><span class="firefly fy4" aria-hidden="true"></span><span class="firefly fy5" aria-hidden="true"></span><span class="firefly fy6" aria-hidden="true"></span>
+            <span class="breeze b1" aria-hidden="true"></span><span class="breeze b2" aria-hidden="true"></span><span class="breeze b3" aria-hidden="true"></span>
+            <div class="butterfly" aria-hidden="true"></div>
+            <div class="birds" aria-hidden="true"><svg class="bird" viewBox="0 0 22 12"><path d="M1 8 Q5 2 10 8 Q15 2 21 8" /></svg><svg class="bird" viewBox="0 0 22 12"><path d="M1 8 Q5 2 10 8 Q15 2 21 8" /></svg><svg class="bird" viewBox="0 0 22 12"><path d="M1 8 Q5 2 10 8 Q15 2 21 8" /></svg></div>
+            <main class="wrap forest-copy"><h1 class="reveal">Kullan.py</h1><div class="intro tilt-card reveal"><img class="lanyard-pfp" id="lanyard-pfp" alt="Discord avatar" /><div class="lanyard-info"><span class="lanyard-tag"><span class="prompt">$~</span> <span id="lanyard-user">loading…</span><span class="dot" id="lanyard-dot"></span></span><span>currently i'm - <span id="lanyard-status">…</span></span><span id="lanyard-custom"></span><span><span class="prompt">&gt;</span> Hi, I'm Chill and easy to talk — you can message me, I often check my DMs</span></div></div></main>
             <svg class="forest-art" viewBox="0 0 1440 620" preserveAspectRatio="none" aria-hidden="true">
                 <defs>
                     <path id="pine" d="M60 0 C53 33 41 53 26 76 L47 76 C37 99 23 125 9 150 L41 150 C30 176 16 204 0 233 L45 233 L45 310 L75 310 L75 233 L120 233 C104 204 90 176 79 150 L111 150 C97 125 83 99 73 76 L94 76 C79 53 67 33 60 0Z" />
                 </defs>
-                <path d="M0 550 C190 492 332 506 520 538 C735 574 1024 485 1210 524 C1325 549 1387 555 1440 544 L1440 620 L0 620Z" fill="#173c30" />
-                <use href="#pine" x="-12" y="296" transform="rotate(-7 48 450) scale(1.38)" fill="#0b2823" />
-                <use href="#pine" x="135" y="230" transform="rotate(5 195 420) scale(1.1)" fill="#12352a" opacity=".94" />
-                <use href="#pine" x="298" y="316" transform="rotate(-3 358 470) scale(.82)" fill="#194333" opacity=".9" />
-                <use href="#pine" x="974" y="286" transform="rotate(4 1034 450) scale(1.04)" fill="#183d30" opacity=".93" />
-                <use href="#pine" x="1125" y="211" transform="rotate(-6 1185 430) scale(1.23)" fill="#0c2924" />
-                <use href="#pine" x="1302" y="298" transform="rotate(7 1362 472) scale(.92)" fill="#14382c" />
+                <path d="M0 430 C300 380 620 405 940 385 C1200 368 1330 395 1440 380 L1440 620 L0 620Z" fill="#b6d6b2" />
+                <path d="M0 500 C280 460 580 480 880 465 C1160 452 1330 478 1440 468 L1440 620 L0 620Z" fill="#9cc49b" />
+                <path d="M0 565 C320 525 640 550 940 530 C1220 512 1360 540 1440 532 L1440 620 L0 620Z" fill="#82b382" />
+                <g class="tree1"><rect x="140" y="480" width="12" height="60" fill="#7d6f52" /><circle cx="146" cy="466" r="40" fill="#8fbd8c" /><circle cx="166" cy="478" r="26" fill="#a1c89b" /></g>
+                <g class="tree2"><rect x="1120" y="440" width="14" height="64" fill="#7d6f52" /><circle cx="1127" cy="424" r="46" fill="#84b581" /><circle cx="1152" cy="440" r="28" fill="#96c290" /></g>
+                <g class="tree3"><rect x="1310" y="466" width="10" height="52" fill="#7d6f52" /><circle cx="1315" cy="454" r="34" fill="#8fbd8c" /></g>
+                <g class="tree4"><rect x="470" y="470" width="11" height="56" fill="#7d6f52" /><circle cx="476" cy="456" r="36" fill="#8fbd8c" /><circle cx="494" cy="468" r="22" fill="#a1c89b" /></g>
+                <g class="tree5"><rect x="700" y="475" width="13" height="60" fill="#7d6f52" /><circle cx="707" cy="460" r="42" fill="#84b581" /><circle cx="728" cy="474" r="26" fill="#96c290" /></g>
+                <g class="tree6"><rect x="880" y="465" width="12" height="58" fill="#7d6f52" /><circle cx="886" cy="450" r="38" fill="#8fbd8c" /><circle cx="904" cy="462" r="24" fill="#a1c89b" /></g>
+                <g class="tree7"><rect x="260" y="465" width="9" height="50" fill="#7d6f52" /><circle cx="265" cy="452" r="30" fill="#7fb27d" /><circle cx="280" cy="463" r="19" fill="#93c290" /></g>
+                <g class="grass" fill="none" stroke="#69a867" stroke-linecap="round">
+                    <path d="M300 620 C298 600 295 592 303 572" stroke-width="4" />
+                    <path d="M310 620 C313 604 315 594 306 578" stroke-width="4" />
+                    <path d="M320 620 C318 606 316 598 324 584" stroke-width="3.5" />
+                </g>
+                <g class="grass grass-two" fill="none" stroke="#7cb67a" stroke-linecap="round">
+                    <path d="M860 620 C858 602 856 592 864 574" stroke-width="4" />
+                    <path d="M870 620 C873 605 875 596 866 580" stroke-width="4" />
+                    <path d="M880 620 C878 607 876 599 884 586" stroke-width="3.5" />
+                </g>
+                <g class="grass" fill="none" stroke="#6fae6c" stroke-linecap="round">
+                    <path d="M1210 620 C1208 601 1205 592 1214 572" stroke-width="4" />
+                    <path d="M1220 620 C1223 604 1225 595 1216 579" stroke-width="4" />
+                    <path d="M1230 620 C1228 606 1226 598 1234 584" stroke-width="3.5" />
+                </g>
             </svg>
         </section>
 
@@ -132,18 +197,59 @@
             <div class="cloud cloud-one" aria-hidden="true"></div><div class="cloud cloud-two" aria-hidden="true"></div>
             <div class="birds" aria-hidden="true"><svg class="bird" viewBox="0 0 22 12"><path d="M1 8 Q5 2 10 8 Q15 2 21 8" /></svg><svg class="bird" viewBox="0 0 22 12"><path d="M1 8 Q5 2 10 8 Q15 2 21 8" /></svg><svg class="bird" viewBox="0 0 22 12"><path d="M1 8 Q5 2 10 8 Q15 2 21 8" /></svg></div>
             <span class="crab crab-water" aria-label="A tiny crab swimming happily"></span><span class="crab crab-shore" aria-label="A tiny crab walking in circles by the umbrella"></span>
-            <main class="wrap"><article class="beach-card tilt-card"><p class="eyebrow">/ projects</p><h2>Now we're at<br />the beach.</h2><p>Small tools I made while learning. Everything is free and open source.</p><div class="project-list"><div class="project"><span class="project-number">01</span><div><h3>TinyKullan</h3><small>macro automation</small></div><a class="project-link" href="https://github.com/Kullaners/TinyKullan" target="_blank" rel="noopener">github ↗</a></div><div class="project"><span class="project-number">02</span><div><h3>Kullan Downloader</h3><small>media downloader</small></div><a class="project-link" href="https://github.com/Kullaners/Kullan-Downloader" target="_blank" rel="noopener">github ↗</a></div><div class="project"><span class="project-number">03</span><div><h3>KullanRPC</h3><small>Discord Rich Presence</small></div><a class="project-link" href="https://github.com/Kullaners/KullanRPC" target="_blank" rel="noopener">github ↗</a></div></div><p class="about-line">Dive a little deeper to meet the person behind the projects.</p><footer>© <span id="year"></span> Kullan</footer></article></main>
+            <main class="wrap"><article class="beach-card tilt-card reveal"><p class="eyebrow">/ projects</p><h2>Now we're at<br />the beach.</h2><p>Small tools I made while learning. Everything is free and open source.</p><div class="project-list"><div class="project"><span class="project-number">01</span><div><h3>TinyKullan</h3><small>macro automation</small></div><a class="project-link" href="https://github.com/Kullaners/TinyKullan" target="_blank" rel="noopener">github ↗</a></div><div class="project"><span class="project-number">02</span><div><h3>Kullan Downloader</h3><small>media downloader</small></div><a class="project-link" href="https://github.com/Kullaners/Kullan-Downloader" target="_blank" rel="noopener">github ↗</a></div><div class="project"><span class="project-number">03</span><div><h3>KullanRPC</h3><small>Discord Rich Presence</small></div><a class="project-link" href="https://github.com/Kullaners/KullanRPC" target="_blank" rel="noopener">github ↗</a></div></div><p class="about-line">Dive a little deeper to meet the person behind the projects.</p></article></main>
         </section>
 
         <section class="screen underwater" id="about">
-            <nav class="nav" aria-label="Underwater navigation"><a href="#projects">← beach</a><span class="nav-links"><a href="https://github.com/Kullaners" target="_blank" rel="noopener">github ↗</a><a href="https://discord.gg/k6shVU7sf6" target="_blank" rel="noopener">discord ↗</a></span></nav>
+            <nav class="nav" aria-label="Underwater navigation"><a href="#projects">← beach</a></nav>
             <div class="water-surface" aria-hidden="true"></div>
             <span class="bubble b1" aria-hidden="true"></span><span class="bubble b2" aria-hidden="true"></span><span class="bubble b3" aria-hidden="true"></span><span class="bubble b4" aria-hidden="true"></span><span class="bubble b5" aria-hidden="true"></span><span class="bubble b6" aria-hidden="true"></span>
             <span class="fish fish-one" aria-hidden="true"></span><span class="fish fish-two" aria-hidden="true"></span><span class="fish fish-four" aria-hidden="true"></span><span class="fish fish-five" aria-hidden="true"></span>
-            <main class="wrap"><article class="about-card tilt-card"><p class="eyebrow">/ about me</p><h2>Under the surface.</h2><p>I'm Kullan, a 15-year-old developer from Bulgaria. I'm interested in IT and cyber security, and I learn by turning small ideas into things people can use.</p><div class="about-links"><a href="https://github.com/Kullaners" target="_blank" rel="noopener">github ↗</a><a href="https://discord.gg/k6shVU7sf6" target="_blank" rel="noopener">Discord ↗</a></div></article></main>
+            <main class="wrap"><article class="about-card tilt-card reveal"><p class="eyebrow">/ about me</p><h2>Under the surface.</h2><p>I'm Kullan, a 15-year-old developer from Bulgaria. I'm interested in IT and cyber security, and I learn by turning small ideas into things people can use.</p><div class="about-links"><a href="https://github.com/Kullaners" target="_blank" rel="noopener">github ↗</a><a href="https://discord.gg/k6shVU7sf6" target="_blank" rel="noopener">Discord ↗</a></div></article></main>
         </section>
         <script>
-            document.getElementById("year").textContent = new Date().getFullYear();
+            const LANYARD_ID = "1037391163507871884";
+            const lanyardPfp = document.getElementById("lanyard-pfp");
+            const lanyardUser = document.getElementById("lanyard-user");
+            const lanyardDot = document.getElementById("lanyard-dot");
+            const lanyardStatus = document.getElementById("lanyard-status");
+            const lanyardCustom = document.getElementById("lanyard-custom");
+            const statusColor = { online: "#57f287", idle: "#fee75c", dnd: "#ed4245", offline: "#747f8d" };
+            const lanyardEmoji = (activity) => activity.emoji ? (activity.emoji.id ? `<img src="https://cdn.discordapp.com/emojis/${activity.emoji.id}.png" alt="" width="14" height="14" style="border-radius:2px;vertical-align:-2px" />` : `${activity.emoji.name} `) : "";
+            async function loadLanyard() {
+                try {
+                    const response = await fetch(`https://api.lanyard.rest/v1/users/${LANYARD_ID}`);
+                    if (!response.ok) throw new Error("bad status");
+                    const { data } = await response.json();
+                    const user = data.discord_user;
+                    lanyardPfp.src = user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=64` : `https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator || 0) % 5}.png`;
+                    lanyardUser.textContent = user.global_name || user.username;
+                    lanyardDot.style.background = statusColor[data.discord_status] || "#747f8d";
+                    lanyardStatus.textContent = data.discord_status;
+                    const custom = data.activities.find((a) => a.type === 4);
+                    if (custom && custom.state) lanyardCustom.innerHTML = `<span class="prompt">&gt;</span> ${lanyardEmoji(custom)}${custom.state}`;
+                } catch {
+                    lanyardUser.textContent = "status unavailable";
+                    lanyardDot.style.background = "#747f8d";
+                    lanyardStatus.textContent = "unknown";
+                }
+            }
+            loadLanyard();
+            document.querySelectorAll('a[href^="#"]').forEach((link) => { link.addEventListener("click", (event) => { const target = document.querySelector(link.getAttribute("href")); if (target) { event.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); } }); });
+            const revealObserver = new IntersectionObserver((entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add("revealed"); revealObserver.unobserve(entry.target); } }); }, { threshold: 0.2 });
+            document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+            const forestSection = document.getElementById("home");
+            if (forestSection && !window.matchMedia("(prefers-reduced-motion: reduce)").matches && window.matchMedia("(pointer: fine)").matches) {
+                const sunEl = forestSection.querySelector(".sun");
+                const artEl = forestSection.querySelector(".forest-art");
+                forestSection.addEventListener("pointermove", (event) => {
+                    const dx = event.clientX / window.innerWidth - .5;
+                    const dy = event.clientY / window.innerHeight - .5;
+                    sunEl.style.translate = `${(dx * 28).toFixed(1)}px ${(dy * 18).toFixed(1)}px`;
+                    artEl.style.translate = `${(-dx * 16).toFixed(1)}px ${(-dy * 10).toFixed(1)}px`;
+                });
+                forestSection.addEventListener("pointerleave", () => { sunEl.style.translate = ""; artEl.style.translate = ""; });
+            }
             if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && window.matchMedia("(pointer: fine)").matches) {
                 document.querySelectorAll(".tilt-card").forEach((card) => {
                     card.addEventListener("pointermove", (event) => {
